@@ -86,4 +86,16 @@
         app:layout_constraintHorizontal_bias="0.675"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/signupOption" />
+
+    <TextView
+        android:id="@+id/userNameInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="minimum 5 characters"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toTopOf="@+id/login_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.841"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_userName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
