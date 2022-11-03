@@ -34,6 +34,7 @@ public class SignupPage extends AppCompatActivity {
     Boolean validSQ = false;
     Boolean validSA = false;
 
+    dbHandler handler=new dbHandler(SignupPage.this,"myApp",null,1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,8 @@ public class SignupPage extends AppCompatActivity {
         signupSQ = findViewById(R.id.signupSQ);
         signupSA = findViewById(R.id.signupSA);
         signupBtn = findViewById(R.id.signupButton);
+
+
 
 
         List<String> titles = new ArrayList<String>();
@@ -118,6 +121,9 @@ public class SignupPage extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String s = charSequence.toString();
                 signupInstructions.setText("");
+
+                Boolean unique=true;
+
                 if (s.length() < 5) {
                     signupInstructions.setText("Username should have atleast 5 characters");
                     validUsername = false;
@@ -131,6 +137,17 @@ public class SignupPage extends AppCompatActivity {
                         }
 
                     }
+
+
+                    UserDetails user=handler.fetchUserUsingUserName(s);
+                    if(user!=null)
+                    {
+                        signupInstructions.setText("This Username already exists");
+                        validUsername = false;
+                        return;
+                    }
+
+
                     signupInstructions.setText("");
                     validUsername = true;
                 }
@@ -245,7 +262,8 @@ public class SignupPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String s = charSequence.toString();signupInstructions.setText("");
+                String s = charSequence.toString();
+                signupInstructions.setText("");
                 String[] str = s.split("-");
 
                 if (str.length != 3 || (str[0].length() != 4 || str[1].length() != 2 || str[2].length() != 2)) {
@@ -270,7 +288,8 @@ public class SignupPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String email = charSequence.toString();signupInstructions.setText("");
+                String email = charSequence.toString();
+                signupInstructions.setText("");
                 if (email.matches(emailPattern) && email.length() > 0) {
                     signupInstructions.setText("");
                     validEmail = true;
@@ -294,7 +313,8 @@ public class SignupPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String s = charSequence.toString();signupInstructions.setText("");
+                String s = charSequence.toString();
+                signupInstructions.setText("");
                 if (s.length() != 10) {
                     signupInstructions.setText("Phone number should contain only 10 characters");
                     validPhone = false;
@@ -317,7 +337,8 @@ public class SignupPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String s = charSequence.toString();signupInstructions.setText("");
+                String s = charSequence.toString();
+                signupInstructions.setText("");
 
                 if (s.length() < 20) {
                     signupInstructions.setText("Security Question should contain atleast 20 characters");
@@ -341,7 +362,8 @@ public class SignupPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String s = charSequence.toString();signupInstructions.setText("");
+                String s = charSequence.toString();
+                signupInstructions.setText("");
                 if (s.length() < 5) {
                     signupInstructions.setText("Security answer should contain atleast 5 characters");
                     validSA = false;
@@ -361,41 +383,48 @@ public class SignupPage extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!validUsername) {
-                    signupInstructions.setText("Enter Valid UserName");
-                    return;
+                {
+                    if (!validUsername) {
+                        signupInstructions.setText("Enter Valid UserName");
+                        return;
+                    }
+                    if (!validDOB) {
+                        signupInstructions.setText("Enter Valid DOB");
+                        return;
+                    }
+                    if (!validEmail) {
+                        signupInstructions.setText("Enter Valid Email");
+                        return;
+                    }
+                    if (!validPassword) {
+                        signupInstructions.setText("Enter Valid Password");
+                        return;
+                    }
+                    if (!validFirstName) {
+                        signupInstructions.setText("Enter Valid firstName");
+                        return;
+                    }
+                    if (!validPhone) {
+                        signupInstructions.setText("Enter Valid Phone");
+                        return;
+                    }
+                    if (!validSQ) {
+                        signupInstructions.setText("Enter Valid Security Question");
+                        return;
+                    }
+                    if (!validSA) {
+                        signupInstructions.setText("Enter Valid Security Answer");
+                        return;
+                    }
                 }
-                if (!validDOB) {
-                    signupInstructions.setText("Enter Valid DOB");
-                    return;
-                }
-                if (!validEmail) {
-                    signupInstructions.setText("Enter Valid Email");
-                    return;
-                }
-                if (!validPassword) {
-                    signupInstructions.setText("Enter Valid Password");
-                    return;
-                }
-                if (!validFirstName) {
-                    signupInstructions.setText("Enter Valid firstName");
-                    return;
-                }
-                if (!validPhone) {
-                    signupInstructions.setText("Enter Valid Phone");
-                    return;
-                }
-                if (!validSQ) {
-                    signupInstructions.setText("Enter Valid Security Question");
-                    return;
-                }
-                if (!validSA) {
-                    signupInstructions.setText("Enter Valid Security Answer");
-                    return;
-                }
-
                 if (validUsername && validPassword && validFirstName && validPhone && validEmail && validDOB && validSQ && validSA) {
                     Toast.makeText(SignupPage.this, "Adding user", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
                     return;
                 }
             }
