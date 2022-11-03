@@ -37,6 +37,7 @@ public class LoginPage extends AppCompatActivity {
         ForgotPassword = findViewById(R.id.forgotPassword);
         loginButton = findViewById(R.id.loginButton);
 
+        dbHandler handler=new dbHandler(LoginPage.this,"myApp",null,1);
 
         SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
         String CheckingIfAlreadyLoggedIn=sp.getString("LoggedInUser","");
@@ -153,6 +154,19 @@ public class LoginPage extends AppCompatActivity {
                 final_password = String.valueOf(password.getText());
 
 
+                UserDetails user=handler.fetchUserUsingUserName(final_username);
+                if(user==null)
+                {
+                    Toast.makeText(LoginPage.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                if(!user.getPassword().equals(final_password))
+                {
+                    Toast.makeText(LoginPage.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
 
                 SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
@@ -165,6 +179,15 @@ public class LoginPage extends AppCompatActivity {
                 startActivity(intent);
 
 
+            }
+        });
+
+
+        signupOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginPage.this,SignupPage.class);
+                startActivity(intent);
             }
         });
 
