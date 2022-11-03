@@ -37,6 +37,8 @@ public class LoginPage extends AppCompatActivity {
         ForgotPassword = findViewById(R.id.forgotPassword);
         loginButton = findViewById(R.id.loginButton);
 
+        userNameInstructions.setVisibility(View.GONE);
+        passwordInstructions.setVisibility(View.GONE);
         dbHandler handler=new dbHandler(LoginPage.this,"myApp",null,1);
 
         SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
@@ -136,16 +138,16 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(!ValidPassword)
-                {
-                    Toast.makeText(LoginPage.this, "Password is not Valid", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!ValidUserName)
-                {
-                    Toast.makeText(LoginPage.this, "UserName is not Valid", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if(!ValidPassword)
+//                {
+//                    Toast.makeText(LoginPage.this, "Password is not Valid", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                if(!ValidUserName)
+//                {
+//                    Toast.makeText(LoginPage.this, "UserName is not Valid", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
 
 
                 String final_username, final_password;

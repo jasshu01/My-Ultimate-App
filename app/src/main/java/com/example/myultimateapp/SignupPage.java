@@ -3,9 +3,11 @@ package com.example.myultimateapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,7 +36,7 @@ public class SignupPage extends AppCompatActivity {
     Boolean validSQ = false;
     Boolean validSA = false;
 
-    dbHandler handler=new dbHandler(SignupPage.this,"myApp",null,1);
+    dbHandler handler = new dbHandler(SignupPage.this, "myApp", null, 1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,6 @@ public class SignupPage extends AppCompatActivity {
         signupSQ = findViewById(R.id.signupSQ);
         signupSA = findViewById(R.id.signupSA);
         signupBtn = findViewById(R.id.signupButton);
-
-
 
 
         List<String> titles = new ArrayList<String>();
@@ -122,7 +122,7 @@ public class SignupPage extends AppCompatActivity {
                 String s = charSequence.toString();
                 signupInstructions.setText("");
 
-                Boolean unique=true;
+                Boolean unique = true;
 
                 if (s.length() < 5) {
                     signupInstructions.setText("Username should have atleast 5 characters");
@@ -139,9 +139,8 @@ public class SignupPage extends AppCompatActivity {
                     }
 
 
-                    UserDetails user=handler.fetchUserUsingUserName(s);
-                    if(user!=null)
-                    {
+                    UserDetails user = handler.fetchUserUsingUserName(s);
+                    if (user != null) {
                         signupInstructions.setText("This Username already exists");
                         validUsername = false;
                         return;
@@ -418,11 +417,27 @@ public class SignupPage extends AppCompatActivity {
                     }
                 }
                 if (validUsername && validPassword && validFirstName && validPhone && validEmail && validDOB && validSQ && validSA) {
-                    Toast.makeText(SignupPage.this, "Adding user", Toast.LENGTH_SHORT).show();
 
 
+//                    Log.d("selectedTitle", "onClick: i am here");
+//                    Log.d("selectedTitle", "onClick: "+signupTitle.getSelectedItem());
 
+                    String gender = "Female";
+                    if (signupTitle.getSelectedItem().equals("Mr."))
+                        gender = "Male";
 
+                    UserDetails user = new UserDetails(signupTitle.getSelectedItem().toString(), signupFirstName.getText().toString(), signupLastName.getText().toString(), signupUsername.getText().toString(), signupPassword.getText().toString(), signupDOB.getText().toString(), gender, signupEmail.getText().toString(), signupPhone.getText().toString(), signupImage.getText().toString(), signupAddress.getText().toString(), signupPostal.getText().toString(), signupSQ.getText().toString(), signupSA.getText().toString());
+
+                    if(handler.addUser(user, SignupPage.this))
+                    {
+                        Toast.makeText(SignupPage.this, "user Added", Toast.LENGTH_SHORT).show();
+
+                        Intent intent=new Intent(SignupPage.this,LoginPage.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(SignupPage.this, "Some Error Occured!", Toast.LENGTH_SHORT).show();
+                    }
 
 
                     return;
