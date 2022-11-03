@@ -39,9 +39,9 @@ public class LoginPage extends AppCompatActivity {
 
 
         SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
+        String CheckingIfAlreadyLoggedIn=sp.getString("LoggedInUser","");
 
-        String CheckingIfAlreadyLoggedIn=sp.getString("LoggedInUser","No Logged In User Exists");
-        if(!CheckingIfAlreadyLoggedIn.equals("No Logged In User Exists"))
+        if(!CheckingIfAlreadyLoggedIn.equals(""))
         {
             Intent intent = new Intent(LoginPage.this, HomePage.class);
             startActivity(intent);
@@ -138,10 +138,12 @@ public class LoginPage extends AppCompatActivity {
                 if(!ValidPassword)
                 {
                     Toast.makeText(LoginPage.this, "Password is not Valid", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if(!ValidUserName)
                 {
                     Toast.makeText(LoginPage.this, "UserName is not Valid", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
 

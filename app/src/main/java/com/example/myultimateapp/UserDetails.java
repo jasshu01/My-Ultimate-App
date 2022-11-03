@@ -10,10 +10,57 @@ public class UserDetails {
     private String address, postalcode;
     private String securityquestion, securityanswer;
 
+    int sno;
+
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "title='" + title + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", gender='" + gender + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", imageurls='" + imageurls + '\'' +
+                ", address='" + address + '\'' +
+                ", postalcode='" + postalcode + '\'' +
+                ", securityquestion='" + securityquestion + '\'' +
+                ", securityanswer='" + securityanswer + '\'' +
+                ", sno=" + sno +
+                '}';
+    }
+
+    public int getSno() {
+        return sno;
+    }
+
+    public void setSno(int sno) {
+        this.sno = sno;
+    }
+
     public UserDetails() {
     }
 
-    public UserDetails(String title, String firstName, String lastName, String dob, String gender, String username, String password, String email, String phone, String imageurls, String address, String postalcode, String securityquestion, String securityanswer) {
+    public UserDetails(String title, String firstName, String lastName, String username, String password, String dob, String gender, String email, String phone, String imageurls, String address, String postalcode, String securityquestion, String securityanswer) {
+        this.title = title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.gender = gender;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.imageurls = imageurls;
+        this.address = address;
+        this.postalcode = postalcode;
+        this.securityquestion = securityquestion;
+        this.securityanswer = securityanswer;
+    }public UserDetails(int sno,String title, String firstName, String lastName, String username, String password, String dob, String gender, String email, String phone, String imageurls, String address, String postalcode, String securityquestion, String securityanswer) {
+        this.sno=sno;
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
