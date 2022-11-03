@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 public class dbHandler extends SQLiteOpenHelper {
 
+    public static String validUserNameCharacters="abcdefghijklmnopqrstuvwxyz1234567890";
     public dbHandler(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
 

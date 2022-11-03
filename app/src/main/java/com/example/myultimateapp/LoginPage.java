@@ -48,87 +48,87 @@ public class LoginPage extends AppCompatActivity {
             startActivity(intent);
         }
 
-        userName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                String username = s.toString();
-                if (username.length() >= 5) {
-                    userNameInstructions.setText("");
-                    ValidUserName = true;
-
-
-                } else {
-                    userNameInstructions.setTextColor(Color.argb(255, 255, 0, 0));
-
-                    ValidUserName = false;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-
-        password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                boolean numericPresent = false;
-                ValidPassword = false;
-                passwordInstructions.setTextColor(Color.argb(255, 255, 0, 0));
-                String password = s.toString();
-                if (password.length() == 0) {
-                    passwordInstructions.setText("");
-                } else {
-                    if (password.length() < 8)
-                        passwordInstructions.setText("Password Length Should be minimum 8 Characters");
-                    else if (password.contains("@") || password.contains("#") || password.contains("$")) {
-
-
-                        for (int k = 0; k <= 9; k++) {
-                            if (password.contains(String.valueOf(k)))
-                                numericPresent = true;
-
-                        }
-
-                        if (numericPresent == false) {
-                            passwordInstructions.setText("Add atleast one digit");
-                        } else {
-                            passwordInstructions.setText("");
-                        }
-
-                    } else {
-                        passwordInstructions.setText("Add atleast one Special Chatacter @,#,$");
-                    }
-
-                }
-
-                if (numericPresent && password.length() >= 8 && (password.contains("@") || password.contains("#") || password.contains("$"))) {
-                    passwordInstructions.setText("");
-                    passwordInstructions.setTextColor(Color.argb(255, 0, 255, 0));
-                    ValidPassword = true;
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
+//        userName.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+//                String username = s.toString();
+//                if (username.length() >= 5) {
+//                    userNameInstructions.setText("");
+//                    ValidUserName = true;
+//
+//
+//                } else {
+//                    userNameInstructions.setTextColor(Color.argb(255, 255, 0, 0));
+//
+//                    ValidUserName = false;
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+//
+//
+//        password.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+//                boolean numericPresent = false;
+//                ValidPassword = false;
+//                passwordInstructions.setTextColor(Color.argb(255, 255, 0, 0));
+//                String password = s.toString();
+//                if (password.length() == 0) {
+//                    passwordInstructions.setText("");
+//                } else {
+//                    if (password.length() < 8)
+//                        passwordInstructions.setText("Password Length Should be minimum 8 Characters");
+//                    else if (password.contains("@") || password.contains("#") || password.contains("$")) {
+//
+//
+//                        for (int k = 0; k <= 9; k++) {
+//                            if (password.contains(String.valueOf(k)))
+//                                numericPresent = true;
+//
+//                        }
+//
+//                        if (numericPresent == false) {
+//                            passwordInstructions.setText("Add atleast one digit");
+//                        } else {
+//                            passwordInstructions.setText("");
+//                        }
+//
+//                    } else {
+//                        passwordInstructions.setText("Add atleast one Special Chatacter @,#,$");
+//                    }
+//
+//                }
+//
+//                if (numericPresent && password.length() >= 8 && (password.contains("@") || password.contains("#") || password.contains("$"))) {
+//                    passwordInstructions.setText("");
+//                    passwordInstructions.setTextColor(Color.argb(255, 0, 255, 0));
+//                    ValidPassword = true;
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+//
 
 
 
