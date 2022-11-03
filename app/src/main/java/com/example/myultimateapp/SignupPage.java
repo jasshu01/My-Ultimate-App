@@ -66,6 +66,8 @@ public class SignupPage extends AppCompatActivity {
                 String s = charSequence.toString();
                 if (s.length() < 2)
                     signupInstructions.setText("Enter a valid Name ");
+                else
+                    signupInstructions.setText("");
             }
 
             @Override
@@ -333,6 +335,8 @@ public class SignupPage extends AppCompatActivity {
 
             }
         });
+
+
 
 
 
