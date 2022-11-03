@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#BF3D3D"
+    tools:context=".JokesFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/jokeTextview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="hello_blank_fragment" />
+
+</FrameLayout>
