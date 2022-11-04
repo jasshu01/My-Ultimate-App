@@ -36,7 +36,7 @@ public class JokesFragment extends Fragment {
     TextView textView;
     TextView textView2;
     ProgressBar pgb;
-
+    RequestQueue requestQueue;
     public JokesFragment(Context context) {
         // Required empty public constructor
         this.context = context;
@@ -47,8 +47,6 @@ public class JokesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -58,17 +56,18 @@ public class JokesFragment extends Fragment {
         TextView textView2 = (TextView) view.findViewById(R.id.punchLineTextView);
         ProgressBar pgb = (ProgressBar) view.findViewById(R.id.progressBar);
         Button nextbtn = view.findViewById(R.id.nextbtn);
+        requestQueue = Volley.newRequestQueue(context);
         nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 pgb.setVisibility(view.VISIBLE);
-                fetchJoke(context, view);
+                fetchJoke(view);
 
             }
         });
 
-        fetchJoke(context, view);
+        fetchJoke( view);
     }
 
     @Override
@@ -79,8 +78,8 @@ public class JokesFragment extends Fragment {
     }
 
 
-    public void fetchJoke(Context context, View view) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+    public void fetchJoke( View view) {
+
         String apiURL = "https://official-joke-api.appspot.com/random_joke";
 
 
@@ -100,7 +99,7 @@ public class JokesFragment extends Fragment {
 
                 } catch (JSONException e) {
                     Log.d("fetchingJoke", e.toString());
-                    fetchJoke(context, view);
+                    fetchJoke( view);
                     e.printStackTrace();
                 }
 
@@ -109,7 +108,7 @@ public class JokesFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("fetchingJoke", "Something went wrong" + error);
-                fetchJoke(context, view);
+                fetchJoke( view);
             }
         });
 
