@@ -21,6 +21,8 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
             return new JokesFragment(context);
         if (position == 1)
             return new DogImages( context);
+        if(position==2)
+            return new ActivitiesFragment(context);
         return null;
     }
 
@@ -33,6 +35,8 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
             return "Jokes";
         if (position == 1)
             return "Dogs Images";
+        if (position == 2)
+            return "Activities";
         return null;
     }
 
@@ -42,6 +46,6 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 }
