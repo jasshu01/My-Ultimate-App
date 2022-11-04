@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +32,14 @@ import org.json.JSONObject;
 
 
 public class JokesFragment extends Fragment {
-Context context;
+    Context context;
+    TextView textView;
+    TextView textView2;
+    ProgressBar pgb;
 
     public JokesFragment(Context context) {
         // Required empty public constructor
-        this.context=context;
+        this.context = context;
 
     }
 
@@ -49,8 +54,21 @@ Context context;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        TextView textView = (TextView) view.findViewById(R.id.jokeTextview);
+        TextView textView2 = (TextView) view.findViewById(R.id.punchLineTextView);
+        ProgressBar pgb = (ProgressBar) view.findViewById(R.id.progressBar);
+        Button nextbtn = view.findViewById(R.id.nextbtn);
+        nextbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        fetchJoke(context,view);
+                pgb.setVisibility(view.VISIBLE);
+                fetchJoke(context, view);
+
+            }
+        });
+
+        fetchJoke(context, view);
     }
 
     @Override
@@ -61,11 +79,9 @@ Context context;
     }
 
 
-    public  void fetchJoke(Context context,View view) {
+    public void fetchJoke(Context context, View view) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String apiURL = "https://official-joke-api.appspot.com/random_joke";
-        TextView textView = (TextView) view.findViewById(R.id.jokeTextview);
-        textView.setText("Jokes upcoming");
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -74,23 +90,26 @@ Context context;
             public void onResponse(JSONObject response) {
 
                 try {
-                    TextView textView = (TextView) getView().findViewById(R.id.jokeTextview);
-                    textView.setText(response.getString("setup")+ "\n"+response.getString("punchline"));
-                    Log.d("fetchingJoke", "The response is" + response.getString("setup"));
-                    Log.d("fetchingJoke", "The response is" + response.getString("punchline"));
+                    if (response != null) {
+                        pgb.setVisibility(View.GONE);
+                        textView.setText(response.getString("setup"));
+                        textView.setText(response.getString("setup"));
+                        textView2.setText(response.getString("punchline"));
+                        Log.d("fetchingJoke", "onResponse: " + textView.getText() + " " + textView2.getText());
+                    }
+
                 } catch (JSONException e) {
-                    Log.d("fetchingJoke",e.toString());
+                    Log.d("fetchingJoke", e.toString());
+                    fetchJoke(context, view);
                     e.printStackTrace();
                 }
 
             }
-
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("myapp", "Something went wrong"+error);
-
+                Log.d("fetchingJoke", "Something went wrong" + error);
+                fetchJoke(context, view);
             }
         });
 
