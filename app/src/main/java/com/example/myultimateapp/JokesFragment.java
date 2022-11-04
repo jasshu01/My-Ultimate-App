@@ -52,9 +52,9 @@ public class JokesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView textView = (TextView) view.findViewById(R.id.jokeTextview);
-        TextView textView2 = (TextView) view.findViewById(R.id.punchLineTextView);
-        ProgressBar pgb = (ProgressBar) view.findViewById(R.id.progressBar);
+         textView = (TextView) view.findViewById(R.id.jokeTextview);
+         textView2 = (TextView) view.findViewById(R.id.punchLineTextView);
+        pgb = (ProgressBar) view.findViewById(R.id.progressBar);
         Button nextbtn = view.findViewById(R.id.nextbtn);
         requestQueue = Volley.newRequestQueue(context);
         nextbtn.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,8 @@ public class JokesFragment extends Fragment {
 
                 } catch (JSONException e) {
                     Log.d("fetchingJoke", e.toString());
-                    fetchJoke( view);
+//                    fetchJoke( view);
+                    pgb.setVisibility(View.GONE);
                     e.printStackTrace();
                 }
 
@@ -107,8 +108,9 @@ public class JokesFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("fetchingJoke", "Something went wrong" + error);
-                fetchJoke( view);
+                Log.d("fetchingJoke", "Something went wrong " + error);
+//                fetchJoke( view);
+//                pgb.setVisibility(View.GONE);
             }
         });
 

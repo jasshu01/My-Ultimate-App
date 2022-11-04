@@ -1,64 +1,151 @@
 package com.example.myultimateapp;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DogImages#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+
 public class DogImages extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Context context;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ProgressBar pgb;
+    RequestQueue requestQueue;
+    ImageView dogImage;
 
-    public DogImages() {
-        // Required empty public constructor
+    public DogImages(Context context) {
+
+        this.context = context;
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DogImages.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DogImages newInstance(String param1, String param2) {
-        DogImages fragment = new DogImages();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+         pgb = (ProgressBar) view.findViewById(R.id.progressBar);
+         dogImage = (ImageView) view.findViewById(R.id.dogImage);
+        Button nextbtn = view.findViewById(R.id.nextDogImageBtn);
+        requestQueue = Volley.newRequestQueue(context);
+        nextbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                pgb.setVisibility(view.VISIBLE);
+                fetchDogImage(view);
+
+            }
+        });
+
+        fetchDogImage(view);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_dog_images, container, false);
+    }
+
+
+    public void fetchDogImage(View view) {
+
+        String apiURL = "https://dog.ceo/api/breeds/image/random";
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                apiURL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    if (response != null) {
+                        String src=response.getString("message");
+                        new GetImageFromUrl().execute(src);
+                    }
+
+                } catch (JSONException e) {
+                    Log.d("fetchingJoke", e.toString());
+                    fetchDogImage(view);
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("fetchingJoke", "Something went wrong" + error);
+                fetchDogImage(view);
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+
+    }
+
+    public class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
+
+
+
+        public GetImageFromUrl() {
+
+        }
+
+        protected Bitmap doInBackground(String... url) {
+            String stringUrl = url[0];
+            Bitmap bitmap = null;
+            InputStream inputStream;
+            try {
+                inputStream = new java.net.URL(stringUrl).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d("fetching", "doInBackground: " + bitmap);
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmapPhoto) {
+            super.onPostExecute(bitmapPhoto);
+            Bitmap bitmap = bitmapPhoto;
+            pgb.setVisibility(View.GONE);
+            dogImage.setImageBitmap(bitmap);
+            Log.d("fetchBitmap", "onPostExecute: " + bitmap);
+        }
     }
 }
