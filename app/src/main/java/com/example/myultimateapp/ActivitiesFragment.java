@@ -67,7 +67,7 @@ public class ActivitiesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewActivities);
 
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 50; i++) {
             fetchActivity();
         }
 

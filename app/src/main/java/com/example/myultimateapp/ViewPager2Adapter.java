@@ -20,7 +20,7 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
         if (position == 0)
             return new JokesFragment(context);
         if (position == 1)
-            return new DogImages( context);
+            return new DogImagesFragment( context);
         if(position==2)
             return new ActivitiesFragment(context);
         return null;

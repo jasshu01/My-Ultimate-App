@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,7 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class DogImages extends Fragment {
+public class DogImagesFragment extends Fragment {
 
     Context context;
 
@@ -41,7 +40,7 @@ public class DogImages extends Fragment {
     RequestQueue requestQueue;
     ImageView dogImage;
 
-    public DogImages(Context context) {
+    public DogImagesFragment(Context context) {
 
         this.context = context;
 
