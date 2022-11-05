@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -46,14 +47,13 @@ public class MainPageActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
 
         toggle.syncState();
-//        loadFragment(new JokesFragment(MainPageActivity.this),0);
+
 
         tabLayout = drawerLayout.findViewById(R.id.container).findViewById(R.id.tabLayoutMainPage);
         viewPager2 = drawerLayout.findViewById(R.id.container).findViewById(R.id.viewPager2MainPage);
 
 
-
-        ViewPager2Adapter adapter = new ViewPager2Adapter(this,MainPageActivity.this);
+        ViewPager2Adapter adapter = new ViewPager2Adapter(this, MainPageActivity.this);
         viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -65,8 +65,6 @@ public class MainPageActivity extends AppCompatActivity {
         }).attach();
 
 
-
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -74,13 +72,26 @@ public class MainPageActivity extends AppCompatActivity {
 
                 switch (id) {
                     case R.id.navigationItemHomePage:
-                        Toast.makeText(MainPageActivity.this, "HOMEPAGE", Toast.LENGTH_SHORT).show();
+
+                        findViewById(R.id.tabLayoutMainPage).setVisibility(View.VISIBLE);
+                        findViewById(R.id.viewPager2MainPage).setVisibility(View.VISIBLE);
+
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+
+
+                        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                            ft.replace(R.id.container, fragment);
+                            ft.remove(fragment);
+                            ft.commit();
+                        }
+
                         break;
                     case R.id.navigationItemLogOut:
-                        loadFragment(new ActivitiesFragment(MainPageActivity.this),1);
+                        loadFragment(new ActivitiesFragment(MainPageActivity.this), 1);
                         break;
                     case R.id.navigationItemJokesPage: {
-                        loadFragment(new JokesFragment(MainPageActivity.this),1);
+                        loadFragment(new JokesFragment(MainPageActivity.this), 1);
                         break;
                     }
                 }
@@ -105,6 +116,9 @@ public class MainPageActivity extends AppCompatActivity {
 
 
     private void loadFragment(Fragment fragment, int flag) {
+        findViewById(R.id.tabLayoutMainPage).setVisibility(View.GONE);
+        findViewById(R.id.viewPager2MainPage).setVisibility(View.GONE);
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
