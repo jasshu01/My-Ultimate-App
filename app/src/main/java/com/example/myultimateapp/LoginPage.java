@@ -46,7 +46,7 @@ public class LoginPage extends AppCompatActivity {
 
         if(!CheckingIfAlreadyLoggedIn.equals(""))
         {
-            Intent intent = new Intent(LoginPage.this, HomePage.class);
+            Intent intent = new Intent(LoginPage.this, MainPageActivity.class);
             startActivity(intent);
         }
 

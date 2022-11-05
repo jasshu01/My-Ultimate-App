@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".YourProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/yourProfile_ProfilePic"
+                    android:layout_width="match_parent"
+                    android:layout_height="172dp"
+                    android:src="@drawable/person" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/yourProfile_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="Name: "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/yourProfile_UserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="username: "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/yourProfile_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="DOB(YYYY-MM-DD): "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/yourProfile_Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="Email:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/yourProfile__phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="Phone:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/yourProfile_PostalCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="Postal Code:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/yourProfile_Address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="10dp"
+                android:text="Address:"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</FrameLayout>

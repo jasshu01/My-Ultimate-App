@@ -90,7 +90,7 @@ public class MainPageActivity extends AppCompatActivity {
                         Toast.makeText(MainPageActivity.this, "Logging out TODO", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.navigationItemYourProfile:
-                        Toast.makeText(MainPageActivity.this, "Your Profile TODO", Toast.LENGTH_SHORT).show();
+                        loadFragment(new YourProfileFragment(),1);
                         break;
                     case R.id.navigationItemJokesPage: {
                         loadFragment(new JokesFragment(MainPageActivity.this), 1);
