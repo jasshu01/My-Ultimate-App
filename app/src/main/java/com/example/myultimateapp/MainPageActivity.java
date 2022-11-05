@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,12 +18,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainPageActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    TabLayout tabLayout;
+    ViewPager2 viewPager2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,26 @@ public class MainPageActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
 
         toggle.syncState();
-        loadFragment(new JokesFragment(MainPageActivity.this),0);
+//        loadFragment(new JokesFragment(MainPageActivity.this),0);
+
+        tabLayout = drawerLayout.findViewById(R.id.container).findViewById(R.id.tabLayoutMainPage);
+        viewPager2 = drawerLayout.findViewById(R.id.container).findViewById(R.id.viewPager2MainPage);
+
+
+
+        ViewPager2Adapter adapter = new ViewPager2Adapter(this,MainPageActivity.this);
+        viewPager2.setAdapter(adapter);
+
+        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(ViewPager2Adapter.getPageTitle(position));
+
+            }
+        }).attach();
+
+
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -50,7 +74,7 @@ public class MainPageActivity extends AppCompatActivity {
 
                 switch (id) {
                     case R.id.navigationItemHomePage:
-                        loadFragment(new DogImagesFragment(MainPageActivity.this),1);
+                        Toast.makeText(MainPageActivity.this, "HOMEPAGE", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.navigationItemLogOut:
                         loadFragment(new ActivitiesFragment(MainPageActivity.this),1);

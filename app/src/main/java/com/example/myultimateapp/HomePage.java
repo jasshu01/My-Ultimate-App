@@ -52,7 +52,6 @@ public class HomePage extends AppCompatActivity {
                         tab.setText(ViewPager2Adapter.getPageTitle(position));
 
             }
-
         }).attach();
 
 
