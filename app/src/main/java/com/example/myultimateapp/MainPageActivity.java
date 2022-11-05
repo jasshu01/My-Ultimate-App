@@ -76,22 +76,32 @@ public class MainPageActivity extends AppCompatActivity {
                         findViewById(R.id.tabLayoutMainPage).setVisibility(View.VISIBLE);
                         findViewById(R.id.viewPager2MainPage).setVisibility(View.VISIBLE);
 
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
+
 
 
                         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                            ft.replace(R.id.container, fragment);
-                            ft.remove(fragment);
-                            ft.commit();
+                            FragmentManager fm = getSupportFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.remove(fragment).commit();
                         }
 
                         break;
                     case R.id.navigationItemLogOut:
-                        loadFragment(new ActivitiesFragment(MainPageActivity.this), 1);
+                        Toast.makeText(MainPageActivity.this, "Logging out TODO", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.navigationItemYourProfile:
+                        Toast.makeText(MainPageActivity.this, "Your Profile TODO", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.navigationItemJokesPage: {
                         loadFragment(new JokesFragment(MainPageActivity.this), 1);
+                        break;
+                    }
+                    case R.id.navigationItemActivities: {
+                        loadFragment(new ActivitiesFragment(MainPageActivity.this), 1);
+                        break;
+                    }
+                    case R.id.navigationItemDogImages: {
+                        loadFragment(new DogImagesFragment(MainPageActivity.this), 1);
                         break;
                     }
                 }
