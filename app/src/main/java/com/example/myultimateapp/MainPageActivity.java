@@ -2,6 +2,7 @@ package com.example.myultimateapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,7 +45,6 @@ public class MainPageActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
-
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openNavigation, R.string.closeNavigation);
@@ -92,13 +93,10 @@ public class MainPageActivity extends AppCompatActivity {
 
                         break;
                     case R.id.navigationItemLogOut: {
-                        SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
-                        SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("LoggedInUser", "");
-                        ed.apply();
-//                        Intent intent = new Intent(MainPageActivity.this, LoginPage.class);
-                        Intent intent = new Intent(MainPageActivity.this, MainActivity.class);
-                        startActivity(intent);
+
+
+                       logOutClicked();
+
                     }
                     break;
                     case R.id.navigationItemYourProfile:
@@ -149,5 +147,32 @@ public class MainPageActivity extends AppCompatActivity {
         else
             ft.replace(R.id.container, fragment);
         ft.commit();
+    }
+
+    public void logOutClicked() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainPageActivity.this);
+
+
+        builder.setMessage("Are you sure you want to Logout ?");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+
+            SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
+            SharedPreferences.Editor ed = sp.edit();
+            ed.putString("LoggedInUser", "");
+            ed.apply();
+            finish();
+        });
+
+        builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+
+            dialog.cancel();
+        });
+
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
     }
 }
