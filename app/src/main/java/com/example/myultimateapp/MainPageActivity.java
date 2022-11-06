@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -42,7 +44,9 @@ public class MainPageActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        @SuppressLint("ResourceType") ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openNavigation, R.string.closeNavigation);
+
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openNavigation, R.string.closeNavigation);
 
         drawerLayout.addDrawerListener(toggle);
 
@@ -51,6 +55,9 @@ public class MainPageActivity extends AppCompatActivity {
 
         tabLayout = drawerLayout.findViewById(R.id.container).findViewById(R.id.tabLayoutMainPage);
         viewPager2 = drawerLayout.findViewById(R.id.container).findViewById(R.id.viewPager2MainPage);
+
+        tabLayout.setVisibility(View.VISIBLE);
+        viewPager2.setVisibility(View.VISIBLE);
 
 
         ViewPager2Adapter adapter = new ViewPager2Adapter(this, MainPageActivity.this);
@@ -73,10 +80,8 @@ public class MainPageActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.navigationItemHomePage:
 
-                        findViewById(R.id.tabLayoutMainPage).setVisibility(View.VISIBLE);
-                        findViewById(R.id.viewPager2MainPage).setVisibility(View.VISIBLE);
-
-
+                        tabLayout.setVisibility(View.VISIBLE);
+                        viewPager2.setVisibility(View.VISIBLE);
 
 
                         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
@@ -86,11 +91,18 @@ public class MainPageActivity extends AppCompatActivity {
                         }
 
                         break;
-                    case R.id.navigationItemLogOut:
-                        Toast.makeText(MainPageActivity.this, "Logging out TODO", Toast.LENGTH_SHORT).show();
-                        break;
+                    case R.id.navigationItemLogOut: {
+                        SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sp.edit();
+                        ed.putString("LoggedInUser", "");
+                        ed.apply();
+//                        Intent intent = new Intent(MainPageActivity.this, LoginPage.class);
+                        Intent intent = new Intent(MainPageActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                    break;
                     case R.id.navigationItemYourProfile:
-                        loadFragment(new YourProfileFragment(),1);
+                        loadFragment(new YourProfileFragment(), 1);
                         break;
                     case R.id.navigationItemJokesPage: {
                         loadFragment(new JokesFragment(MainPageActivity.this), 1);
