@@ -193,5 +193,13 @@ public class LoginPage extends AppCompatActivity {
             }
         });
 
+        ForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginPage.this,ForgotPassword_GetUsername.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

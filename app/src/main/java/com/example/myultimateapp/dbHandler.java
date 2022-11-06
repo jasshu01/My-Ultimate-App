@@ -137,7 +137,7 @@ public class dbHandler extends SQLiteOpenHelper {
     }
 
 
-    public void updateUser(UserDetails user,Context context) {
+    public Boolean updateUser(UserDetails user,Context context) {
         
         
         SQLiteDatabase db = getWritableDatabase();
@@ -148,13 +148,14 @@ public class dbHandler extends SQLiteOpenHelper {
         {
             Log.d("Checking","Username already exists "+fetchUserUsingUserName(user.getUsername()));
             Toast.makeText(context, "updating: Username already exists", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
         contentValues.put("title", user.getTitle());
         contentValues.put("firstname", user.getFirstName());
         contentValues.put("lastname", user.getLastName());
         contentValues.put("username", user.getUsername());
+        contentValues.put("dob", user.getDob());
         contentValues.put("password", user.getPassword());
         contentValues.put("gender", user.getGender());
         contentValues.put("email", user.getEmail());
@@ -168,6 +169,7 @@ public class dbHandler extends SQLiteOpenHelper {
         Log.d("updated", "onCreate: "+ user.toString());
 
         db.update("USERS", contentValues, "sno=?", new String[]{String.valueOf(user.getSno())});
+        return true;
 
     }
 
