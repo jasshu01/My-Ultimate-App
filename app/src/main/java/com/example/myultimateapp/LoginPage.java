@@ -41,13 +41,15 @@ public class LoginPage extends AppCompatActivity {
         passwordInstructions.setVisibility(View.GONE);
         dbHandler handler=new dbHandler(LoginPage.this,"myApp",null,1);
 
-        SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
+        SharedPreferences sp =  getSharedPreferences("Current User", MODE_PRIVATE);
+
         String CheckingIfAlreadyLoggedIn=sp.getString("LoggedInUser","");
 
         if(!CheckingIfAlreadyLoggedIn.equals(""))
         {
             Intent intent = new Intent(LoginPage.this, MainPageActivity.class);
-            startActivity(intent);
+             startActivity(intent);
+
         }
 
 //        userName.addTextChangedListener(new TextWatcher() {
