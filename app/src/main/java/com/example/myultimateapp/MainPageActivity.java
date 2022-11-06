@@ -153,7 +153,7 @@ public class MainPageActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainPageActivity.this);
 
 
-        builder.setMessage("Are you sure you want to Logout ?");
+        builder.setMessage("Are you sure  you want to Logout ?");
         builder.setCancelable(false);
 
         builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
