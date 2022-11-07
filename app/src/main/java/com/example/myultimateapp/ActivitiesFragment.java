@@ -39,8 +39,7 @@ public class ActivitiesFragment extends Fragment {
     ArrayList<String> activities = new ArrayList<>();
 
     public ActivitiesFragment() {
-        // Required empty public constructor
-        context = getContext();
+
     }
 
 
@@ -62,7 +61,7 @@ public class ActivitiesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        context = view.getContext();
         requestQueue = Volley.newRequestQueue(context);
         recyclerView = view.findViewById(R.id.recyclerViewActivities);
 

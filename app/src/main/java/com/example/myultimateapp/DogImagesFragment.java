@@ -34,7 +34,7 @@ import java.io.InputStream;
 
 public class DogImagesFragment extends Fragment {
 
-    Context context;
+
 
     ProgressBar pgb;
     RequestQueue requestQueue;
@@ -42,7 +42,6 @@ public class DogImagesFragment extends Fragment {
 
     public DogImagesFragment() {
 
-        context = getContext();
 
     }
 
@@ -59,7 +58,7 @@ public class DogImagesFragment extends Fragment {
         pgb = (ProgressBar) view.findViewById(R.id.progressBar);
         dogImage = (ImageView) view.findViewById(R.id.dogImage);
         Button nextbtn = view.findViewById(R.id.nextDogImageBtn);
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = Volley.newRequestQueue(view.getContext());
         nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
