@@ -100,7 +100,6 @@ public class dbHandler extends SQLiteOpenHelper {
 
     public UserDetails fetchUserUsingUserName(String username) {
         UserDetails user = new UserDetails();
-
         SQLiteDatabase db = getReadableDatabase();
         String query = "Select * from USERS where USERNAME=\"" + username + "\"";
         Cursor cursor = db.rawQuery(query, null);

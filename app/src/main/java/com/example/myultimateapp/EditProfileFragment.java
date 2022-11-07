@@ -1,12 +1,16 @@
 package com.example.myultimateapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +33,14 @@ public class EditProfileFragment extends Fragment {
     Button editProfileBtn;
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    Boolean validUsername = false;
-    Boolean validPassword = false;
-    Boolean validFirstName = false;
-    Boolean validPhone = false;
-    Boolean validEmail = false;
-    Boolean validDOB = false;
-    Boolean validSQ = false;
-    Boolean validSA = false;
+    Boolean validUsername = true;
 
-    dbHandler handler = new dbHandler(getContext(), "myApp", null, 1);
+    Boolean validFirstName = true;
+    Boolean validPhone = true;
+    Boolean validEmail = true;
+    Boolean validDOB = true;
+    Boolean validSQ = true;
+    Boolean validSA = true;
 
 
     public EditProfileFragment() {
@@ -60,6 +62,9 @@ public class EditProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
+
+        dbHandler handler = new dbHandler(getContext(), "myApp", null, 1);
+
         editProfileInstructions = view.findViewById(R.id.instructions);
         editProfileTitle = view.findViewById(R.id.editProfileTitle);
         editProfileFirstName = view.findViewById(R.id.editProfileFirstName);
@@ -75,6 +80,14 @@ public class EditProfileFragment extends Fragment {
         editProfileSA = view.findViewById(R.id.editProfileSA);
         editProfileBtn = view.findViewById(R.id.editProfileButton);
 
+        SharedPreferences sp = getActivity().getSharedPreferences("Current User", MODE_PRIVATE);
+        String username = sp.getString("LoggedInUser", "");
+
+        Log.d("editprofile", "onCreateView: " + username);
+
+
+        UserDetails user = handler.fetchUserUsingUserName(username);
+        Log.d("editprofile", "onCreateView: " + user);
 
         List<String> titles = new ArrayList<String>();
         titles.add("Mr.");
@@ -83,6 +96,21 @@ public class EditProfileFragment extends Fragment {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, titles);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editProfileTitle.setAdapter(dataAdapter);
+
+        int spinnerPosition = dataAdapter.getPosition(user.getTitle());
+        editProfileTitle.setSelection(spinnerPosition);
+
+        editProfileFirstName.setText(user.getFirstName());
+        editProfileLastName.setText(user.getLastName());
+        editProfileUsername.setText(user.getUsername());
+        editProfileDOB.setText(user.getDob());
+        editProfileEmail.setText(user.getEmail());
+        editProfilePhone.setText(user.getPhone());
+        editProfileImage.setText(user.getImageurls());
+        editProfileAddress.setText(user.getAddress());
+        editProfilePostal.setText(user.getPostalcode());
+        editProfileSQ.setText(user.getSecurityquestion());
+        editProfileSA.setText(user.getSecurityanswer());
 
 
         editProfileFirstName.addTextChangedListener(new TextWatcher() {
@@ -155,11 +183,17 @@ public class EditProfileFragment extends Fragment {
                     }
 
 
-                    UserDetails user = handler.fetchUserUsingUserName(s);
-                    if (user != null) {
-                        editProfileInstructions.setText("This Username already exists");
-                        validUsername = false;
-                        return;
+                    UserDetails fetcheduser = handler.fetchUserUsingUserName(s);
+                    Log.d("editing", "onTextChanged: " + user);
+                    Log.d("editing", "onTextChanged: " + fetcheduser);
+                    if (fetcheduser != null) {
+                        if (user.getSno() != fetcheduser.getSno()) {
+                            editProfileInstructions.setText("This Username already exists");
+                            validUsername = false;
+                            return;
+                        }
+
+
                     }
 
 
@@ -174,101 +208,7 @@ public class EditProfileFragment extends Fragment {
 
             }
         });
-        editProfilePassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String password = charSequence.toString();
-                editProfileInstructions.setText("");
-                boolean numericPresent = false;
-                boolean smallPresent = false;
-                boolean capitalPresent = false;
-                boolean sufficientLength = false;
-                boolean specialCharacters = false;
-                editProfileInstructions.setText("");
-
-                if (password.length() < 8) {
-                    sufficientLength = false;
-
-                } else {
-                    sufficientLength = true;
-                }
-
-
-                if (password.contains("@") || password.contains("#") || password.contains("$")) {
-
-                    specialCharacters = true;
-                } else {
-                    specialCharacters = false;
-                }
-
-                for (int k = 0; k <= 9; k++) {
-                    if (password.contains(String.valueOf(k))) {
-                        numericPresent = true;
-                        break;
-                    } else {
-                        numericPresent = false;
-                    }
-                }
-
-
-                for (char ch = 'a'; ch <= 'z'; ch++) {
-                    if (password.contains("" + ch)) {
-                        smallPresent = true;
-                        break;
-                    } else {
-                        smallPresent = false;
-                    }
-                }
-
-                for (char ch = 'A'; ch <= 'Z'; ch++) {
-                    if (password.contains("" + ch)) {
-                        capitalPresent = true;
-                        break;
-                    } else {
-                        capitalPresent = false;
-                    }
-                }
-
-                if (specialCharacters == false) {
-                    editProfileInstructions.setText("Password should have atleast one Special Chatacter @,#,$");
-                }
-                if (sufficientLength == false) {
-
-                    editProfileInstructions.setText("Password should have atleast 8 characters");
-                }
-                if (numericPresent == false) {
-                    editProfileInstructions.setText("Password should have atleast one digit");
-                }
-
-                if (smallPresent == false) {
-                    editProfileInstructions.setText("Password should have atleast one small alphabet");
-                }
-
-
-                if (capitalPresent == false) {
-                    editProfileInstructions.setText("Password should have atleast one capital alphabet");
-                }
-
-                if (specialCharacters && sufficientLength && numericPresent && smallPresent && capitalPresent) {
-                    editProfileInstructions.setText("");
-                    validPassword = true;
-                } else {
-                    validPassword = false;
-                }
-
-            }
-
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         editProfileDOB.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -411,10 +351,7 @@ public class EditProfileFragment extends Fragment {
                         editProfileInstructions.setText("Enter Valid Email");
                         return;
                     }
-                    if (!validPassword) {
-                        editProfileInstructions.setText("Enter Valid Password");
-                        return;
-                    }
+
                     if (!validFirstName) {
                         editProfileInstructions.setText("Enter Valid firstName");
                         return;
@@ -432,22 +369,19 @@ public class EditProfileFragment extends Fragment {
                         return;
                     }
                 }
-                if (validUsername && validPassword && validFirstName && validPhone && validEmail && validDOB && validSQ && validSA) {
+                if (validUsername && validFirstName && validPhone && validEmail && validDOB && validSQ && validSA) {
 
-
-//                    Log.d("selectedTitle", "onClick: i am here");
-//                    Log.d("selectedTitle", "onClick: "+editProfileTitle.getSelectedItem());
 
                     String gender = "Female";
                     if (editProfileTitle.getSelectedItem().equals("Mr."))
                         gender = "Male";
 
-                    UserDetails user = new UserDetails(editProfileTitle.getSelectedItem().toString(), editProfileFirstName.getText().toString(), editProfileLastName.getText().toString(), editProfileUsername.getText().toString(), editProfilePassword.getText().toString(), editProfileDOB.getText().toString(), gender, editProfileEmail.getText().toString(), editProfilePhone.getText().toString(), editProfileImage.getText().toString(), editProfileAddress.getText().toString(), editProfilePostal.getText().toString(), editProfileSQ.getText().toString(), editProfileSA.getText().toString());
+                    UserDetails userUpdated = new UserDetails(user.getSno(), editProfileTitle.getSelectedItem().toString(), editProfileFirstName.getText().toString(), editProfileLastName.getText().toString(), editProfileUsername.getText().toString(), user.getPassword(), editProfileDOB.getText().toString(), gender, editProfileEmail.getText().toString(), editProfilePhone.getText().toString(), editProfileImage.getText().toString(), editProfileAddress.getText().toString(), editProfilePostal.getText().toString(), editProfileSQ.getText().toString(), editProfileSA.getText().toString());
 
-                    if (handler.addUser(user, getContext())) {
-                        Toast.makeText(getContext(), "user Added", Toast.LENGTH_SHORT).show();
+                    if (handler.updateUser(userUpdated, getContext())) {
+                        Toast.makeText(getContext(), "user updated", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getContext(), LoginPage.class);
+                        Intent intent = new Intent(getContext(), MainPageActivity.class);
                         startActivity(intent);
                     } else {
                         Toast.makeText(getContext(), "Some Error Occured!", Toast.LENGTH_SHORT).show();
