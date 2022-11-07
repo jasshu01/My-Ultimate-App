@@ -38,9 +38,9 @@ public class ActivitiesFragment extends Fragment {
 
     ArrayList<String> activities = new ArrayList<>();
 
-    public ActivitiesFragment(Context context) {
+    public ActivitiesFragment() {
         // Required empty public constructor
-        this.context = context;
+        context = getContext();
     }
 
 

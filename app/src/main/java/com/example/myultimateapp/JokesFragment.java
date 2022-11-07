@@ -37,9 +37,8 @@ public class JokesFragment extends Fragment {
     TextView textView2;
     ProgressBar pgb;
     RequestQueue requestQueue;
-    public JokesFragment(Context context) {
-        // Required empty public constructor
-        this.context = context;
+    public JokesFragment() {
+
 
     }
 
@@ -52,6 +51,7 @@ public class JokesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        context=getContext();
          textView = (TextView) view.findViewById(R.id.jokeTextview);
          textView2 = (TextView) view.findViewById(R.id.punchLineTextView);
         pgb = (ProgressBar) view.findViewById(R.id.progressBar);

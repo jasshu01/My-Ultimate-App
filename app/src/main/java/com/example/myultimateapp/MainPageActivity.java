@@ -107,25 +107,29 @@ public class MainPageActivity extends AppCompatActivity {
 //                        Intent intent = new Intent(MainPageActivity.this, ChangePasswordActivity.class);
                         Intent intent = new Intent(MainPageActivity.this, AskSecurityQuestionActivity.class);
                         String username = getSharedPreferences("Current User", MODE_PRIVATE).getString("LoggedInUser", "");
-                        Log.d("Checking",username);
+                        Log.d("Checking", username);
                         intent.putExtra("username", username);
                         startActivity(intent);
 
                     }
                     break;
                     case R.id.navigationItemYourProfile:
-                        loadFragment(new YourProfileFragment(), 1);
+                        loadFragment(new YourProfileFragment());
                         break;
                     case R.id.navigationItemJokesPage: {
-                        loadFragment(new JokesFragment(MainPageActivity.this), 1);
+                        loadFragment(new JokesFragment());
                         break;
                     }
                     case R.id.navigationItemActivities: {
-                        loadFragment(new ActivitiesFragment(MainPageActivity.this), 1);
+                        loadFragment(new ActivitiesFragment());
                         break;
                     }
                     case R.id.navigationItemDogImages: {
-                        loadFragment(new DogImagesFragment(MainPageActivity.this), 1);
+                        loadFragment(new DogImagesFragment());
+                        break;
+                    }
+                    case R.id.navigationItemEditProfile: {
+                        loadFragment(new EditProfileFragment());
                         break;
                     }
                 }
@@ -149,17 +153,15 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
 
-    private void loadFragment(Fragment fragment, int flag) {
+    private void loadFragment(Fragment fragment) {
         findViewById(R.id.tabLayoutMainPage).setVisibility(View.GONE);
         findViewById(R.id.viewPager2MainPage).setVisibility(View.GONE);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        if (flag == 0)
-            ft.add(R.id.container, fragment);
-        else
-            ft.replace(R.id.container, fragment);
+
+        ft.replace(R.id.container, fragment);
         ft.commit();
     }
 
@@ -171,7 +173,7 @@ public class MainPageActivity extends AppCompatActivity {
         builder.setCancelable(false);
 
         SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
-        Log.d("Checking","logout clicked "+sp.getString("LoggedInUser",""));
+        Log.d("Checking", "logout clicked " + sp.getString("LoggedInUser", ""));
 
         builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
 

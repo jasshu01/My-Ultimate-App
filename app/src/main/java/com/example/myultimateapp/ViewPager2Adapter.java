@@ -13,21 +13,18 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
 
     public ViewPager2Adapter(@NonNull FragmentActivity fragmentActivity, Context context) {
         super(fragmentActivity);
-        this.context=context;
+        this.context = context;
     }
 
     public Fragment createFragment(int position) {
         if (position == 0)
-            return new JokesFragment(context);
+            return new JokesFragment();
         if (position == 1)
-            return new DogImagesFragment( context);
-        if(position==2)
-            return new ActivitiesFragment(context);
+            return new DogImagesFragment();
+        if (position == 2)
+            return new ActivitiesFragment();
         return null;
     }
-
-
-
 
 
     public static CharSequence getPageTitle(int position) {
@@ -39,9 +36,6 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
             return "Activities";
         return null;
     }
-
-
-
 
 
     @Override

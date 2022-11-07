@@ -40,9 +40,9 @@ public class DogImagesFragment extends Fragment {
     RequestQueue requestQueue;
     ImageView dogImage;
 
-    public DogImagesFragment(Context context) {
+    public DogImagesFragment() {
 
-        this.context = context;
+        context = getContext();
 
     }
 
@@ -56,8 +56,8 @@ public class DogImagesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-         pgb = (ProgressBar) view.findViewById(R.id.progressBar);
-         dogImage = (ImageView) view.findViewById(R.id.dogImage);
+        pgb = (ProgressBar) view.findViewById(R.id.progressBar);
+        dogImage = (ImageView) view.findViewById(R.id.dogImage);
         Button nextbtn = view.findViewById(R.id.nextDogImageBtn);
         requestQueue = Volley.newRequestQueue(context);
         nextbtn.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +93,7 @@ public class DogImagesFragment extends Fragment {
 
                 try {
                     if (response != null) {
-                        String src=response.getString("message");
+                        String src = response.getString("message");
                         new GetImageFromUrl().execute(src);
                     }
 
@@ -117,7 +117,6 @@ public class DogImagesFragment extends Fragment {
     }
 
     public class GetImageFromUrl extends AsyncTask<String, Void, Bitmap> {
-
 
 
         public GetImageFromUrl() {
