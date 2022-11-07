@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +38,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String username = getIntent().getStringExtra("username");
         dbHandler handler = new dbHandler(this, "myApp", null, 1);
         UserDetails user = handler.fetchUserUsingUserName(username);
+        Log.d("changingpassword", "onClick: "+user.toString());
+        Log.d("changingpassword", "onClick: "+username);
+
+
+
+
+        if(user==null)
+        {
+            finish();
+        }
+
 
 
         p1.addTextChangedListener(new TextWatcher() {
@@ -90,12 +103,21 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validPassword == true) {
+                    Log.d("changingpassword", "onClick: "+user.toString());
                     user.setPassword(String.valueOf(p1.getText()));
+                    Log.d("changingpassword", "onClick: "+ user);
                     if (handler.updateUser(user, ChangePasswordActivity.this)) {
-                            Intent intent=new Intent(ChangePasswordActivity.this,LoginPage.class);
-                            startActivity(intent);
-                    }
-                    else{
+                        Intent intent = new Intent(ChangePasswordActivity.this, LoginPage.class);
+
+                        SharedPreferences sp = getSharedPreferences("Current user", MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sp.edit();
+                        ed.putString("LoggedInUser", "");
+                        ed.apply();
+
+                        startActivity(intent);
+
+
+                    } else {
                         Toast.makeText(ChangePasswordActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
 
                     }

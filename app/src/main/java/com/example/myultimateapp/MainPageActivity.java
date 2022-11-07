@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,7 +96,20 @@ public class MainPageActivity extends AppCompatActivity {
                     case R.id.navigationItemLogOut: {
 
 
-                       logOutClicked();
+                        logOutClicked();
+
+                    }
+                    break;
+                    case R.id.navigationItemChangePassword: {
+                        Toast.makeText(MainPageActivity.this, "Change Password", Toast.LENGTH_SHORT).show();
+
+
+//                        Intent intent = new Intent(MainPageActivity.this, ChangePasswordActivity.class);
+                        Intent intent = new Intent(MainPageActivity.this, AskSecurityQuestionActivity.class);
+                        String username = getSharedPreferences("Current User", MODE_PRIVATE).getString("LoggedInUser", "");
+                        Log.d("Checking",username);
+                        intent.putExtra("username", username);
+                        startActivity(intent);
 
                     }
                     break;
@@ -156,9 +170,11 @@ public class MainPageActivity extends AppCompatActivity {
         builder.setMessage("Are you sure  you want to Logout ?");
         builder.setCancelable(false);
 
+        SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
+        Log.d("Checking","logout clicked "+sp.getString("LoggedInUser",""));
+
         builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
 
-            SharedPreferences sp = getSharedPreferences("Current User", MODE_PRIVATE);
             SharedPreferences.Editor ed = sp.edit();
             ed.putString("LoggedInUser", "");
             ed.apply();

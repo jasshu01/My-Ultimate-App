@@ -34,12 +34,17 @@ public class AskSecurityQuestionActivity extends AppCompatActivity {
         String username=getIntent().getStringExtra("username");
 
         dbHandler handler = new dbHandler(this, "myApp", null, 1);
+
+
         UserDetails user=handler.fetchUserUsingUserName(username);
-        
+
+        Log.d("Ask_Security", "onCreate: "+user.toString());
+if(user==null)
+    finish();
+
         SQ.setText(user.getSecurityquestion());
         
-        Log.d("Ask_Security", "onCreate: "+user.toString());
-        
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

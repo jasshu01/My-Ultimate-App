@@ -18,6 +18,9 @@
         android:id="@+id/navigationItemYourProfile"
         android:title="Your Profile" />
     <item
+        android:id="@+id/navigationItemChangePassword"
+        android:title="Change Password" />
+    <item
         android:id="@+id/navigationItemLogOut"
         android:title="Logout" />
 </menu>
