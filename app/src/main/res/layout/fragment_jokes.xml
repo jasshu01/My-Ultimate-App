@@ -1,28 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ABE0AB"
     tools:context=".JokesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/jokeTextview"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginLeft="100dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
         android:layout_marginTop="150dp"
         android:layout_marginRight="20dp"
-        android:textSize="24sp" />
+        android:padding="20dp"
+        android:paddingLeft="20dp"
+        app:cardBackgroundColor="#C67DD5B2"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="5dp"
+        app:contentPadding="10dp">
 
-    <TextView
-        android:id="@+id/punchLineTextView"
-        android:layout_width="300dp"
+        <TextView
+            android:id="@+id/jokeTextview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="24sp"
+
+            />
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="400dp"
-        android:textSize="24sp" />
+        android:layout_marginTop="350dp"
+        android:layout_marginRight="120dp"
+
+
+        android:backgroundTint="#D78888"
+        android:padding="20dp"
+        android:paddingLeft="20dp"
+        app:cardBackgroundColor="#C67DD5B2"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="5dp"
+        app:contentPadding="10dp">
+
+        <TextView
+            android:id="@+id/punchLineTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="24sp"
+
+            />
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/nextbtn"
@@ -39,5 +73,6 @@
         android:layout_height="300dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="150dp" />
+
 
 </FrameLayout>
