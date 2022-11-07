@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B5E1CC55"
     android:padding="10dp"
     tools:context=".EditProfileFragment">
 
@@ -20,140 +21,142 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="Update Profile"
+            android:textSize="20sp" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="50dp">
 
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <Spinner
-                android:id="@+id/editProfileTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:spinnerMode="dropdown"
-                android:textAlignment="center" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:paddingStart="20dp">
 
-            <EditText
-                android:id="@+id/editProfileFirstName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter FirstName*"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                <Spinner
+                    android:id="@+id/editProfileTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:spinnerMode="dropdown"
+                    android:textAlignment="center" />
 
-            <EditText
-                android:id="@+id/editProfileLastName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter Lastname"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter FirstName*"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfileUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter UserName*"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter Lastname"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/editProfileUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter UserName*"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp" />
 
 
-            <EditText
-                android:id="@+id/editProfileDOB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter DOB (YYYY-MM-DD)*"
-                android:inputType="date"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileDOB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter DOB (YYYY-MM-DD)*"
+                    android:inputType="date"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfileEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter email*"
-                android:inputType="textEmailAddress"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter email*"
+                    android:inputType="textEmailAddress"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfilePhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter Phone*"
-                android:inputType="phone"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfilePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter Phone*"
+                    android:inputType="phone"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfileImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter ImageUrl"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter ImageUrl"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfileAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter Address"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter Address"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfilePostal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter PostalCode"
-                android:inputType="textPostalAddress"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfilePostal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter PostalCode"
+                    android:inputType="textPostalAddress"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfileSQ"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter Security Question*"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileSQ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter Security Question*"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editProfileSA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter Security Answer*"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/editProfileSA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter Security Answer*"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp" />
 
-            <Button
-                android:id="@+id/editProfileButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
-                android:gravity="center"
-                android:text="Update!" />
-        </LinearLayout>
+                <Button
+                    android:id="@+id/editProfileButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="100dp"
+                    android:gravity="center"
+                    android:text="Update!" />
+            </LinearLayout>
         </ScrollView>
-
 
 
     </androidx.cardview.widget.CardView>
