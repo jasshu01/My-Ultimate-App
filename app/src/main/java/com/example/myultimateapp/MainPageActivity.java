@@ -180,7 +180,8 @@ public class MainPageActivity extends AppCompatActivity {
             SharedPreferences.Editor ed = sp.edit();
             ed.putString("LoggedInUser", "");
             ed.apply();
-            finish();
+            Intent intent=new Intent(MainPageActivity.this,LoginPage.class);
+            startActivity(intent);
         });
 
         builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
