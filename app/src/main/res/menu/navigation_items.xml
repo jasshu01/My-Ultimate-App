@@ -15,6 +15,12 @@
         android:id="@+id/navigationItemActivities"
         android:title="Suggested Activities" />
     <item
+        android:id="@+id/navigationItemSendBroadcastMessage"
+        android:title="Send BroadCast Message" />
+    <item
+        android:id="@+id/navigationItemReceiveBroadcastMessage"
+        android:title="Receive BroadCast Message" />
+    <item
         android:id="@+id/navigationItemYourProfile"
         android:title="Your Profile" />
     <item

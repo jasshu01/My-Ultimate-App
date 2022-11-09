@@ -12,15 +12,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -35,6 +37,8 @@ public class MainPageActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
 
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +136,14 @@ public class MainPageActivity extends AppCompatActivity {
                         loadFragment(new EditProfileFragment());
                         break;
                     }
+                    case R.id.navigationItemSendBroadcastMessage: {
+                        loadFragment(new SendBroadCastFragment());
+                        break;
+                    }
+                    case R.id.navigationItemReceiveBroadcastMessage: {
+                        loadFragment(new ReceiveBroadCastFragment());
+                        break;
+                    }
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -166,20 +178,27 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     AirplaneModeChangeReceiver airplaneModeChangeReceiver = new AirplaneModeChangeReceiver();
+//    NetworkChangeBroadcast networkChangeBroadcast = new NetworkChangeBroadcast();
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+////        IntentFilter filter = new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+////        IntentFilter filter = new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+////
+////        registerReceiver(airplaneModeChangeReceiver, filter);
+//        IntentFilter intent = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+//        registerReceiver(networkChangeBroadcast, intent);
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        unregisterReceiver(networkChangeBroadcast);
+////        unregisterReceiver(airplaneModeChangeReceiver);
+//    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter filter = new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED);
 
-        registerReceiver(airplaneModeChangeReceiver, filter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(airplaneModeChangeReceiver);
-    }
     public void logOutClicked() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainPageActivity.this);
 
@@ -195,7 +214,7 @@ public class MainPageActivity extends AppCompatActivity {
             SharedPreferences.Editor ed = sp.edit();
             ed.putString("LoggedInUser", "");
             ed.apply();
-            Intent intent=new Intent(MainPageActivity.this,LoginPage.class);
+            Intent intent = new Intent(MainPageActivity.this, LoginPage.class);
             startActivity(intent);
         });
 
@@ -209,7 +228,6 @@ public class MainPageActivity extends AppCompatActivity {
 
         alertDialog.show();
     }
-
 
 
 }
