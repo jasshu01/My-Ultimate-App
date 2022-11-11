@@ -18,32 +18,32 @@ public class AskSecurityQuestionActivity extends AppCompatActivity {
 
     TextView SQ;
     EditText SA;
-    Button cancel,confirm;
-    
+    Button cancel, confirm;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_security_question);
-        
-        SQ=findViewById(R.id.AskSecurityQuestionActivity_SQ);
-        SA=findViewById(R.id.AskSecurityQuestionActivity_SA);
-        cancel=findViewById(R.id.AskSecurityQuestionActivity_Cancel);
-        confirm=findViewById(R.id.AskSecurityQuestionActivity_confirm);
-        
-        String username=getIntent().getStringExtra("username");
+
+        SQ = findViewById(R.id.AskSecurityQuestionActivity_SQ);
+        SA = findViewById(R.id.AskSecurityQuestionActivity_SA);
+        cancel = findViewById(R.id.AskSecurityQuestionActivity_Cancel);
+        confirm = findViewById(R.id.AskSecurityQuestionActivity_confirm);
+
+        String username = getIntent().getStringExtra("username");
 
         dbHandler handler = new dbHandler(this, "myApp", null, 1);
 
 
-        UserDetails user=handler.fetchUserUsingUserName(username);
+        UserDetails user = handler.fetchUserUsingUserName(username);
 
-        Log.d("Ask_Security", "onCreate: "+user.toString());
-if(user==null)
-    finish();
+        if (user == null)
+            finish();
 
+        Log.d("Ask_Security", "onCreate: " + user.toString());
         SQ.setText(user.getSecurityquestion());
-        
+
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,19 +51,17 @@ if(user==null)
                 finish();
             }
         });
-        
+
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str= String.valueOf(SA.getText());
-                if(str.toLowerCase().equals(user.getSecurityanswer().toLowerCase()))
-                {
-                    Intent intent=new Intent(AskSecurityQuestionActivity.this,ChangePasswordActivity.class);
-                    intent.putExtra("username",user.getUsername());
+                String str = String.valueOf(SA.getText());
+                if (str.toLowerCase().equals(user.getSecurityanswer().toLowerCase())) {
+                    Intent intent = new Intent(AskSecurityQuestionActivity.this, ChangePasswordActivity.class);
+                    intent.putExtra("username", user.getUsername());
                     startActivity(intent);
-                }
-                else{
+                } else {
                     Toast.makeText(AskSecurityQuestionActivity.this, "Your answer is incorrect!", Toast.LENGTH_SHORT).show();
                 }
             }
