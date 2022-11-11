@@ -13,6 +13,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.util.Set;
+
 public class AirplaneModeChangeReceiver extends BroadcastReceiver {
 
 
@@ -28,6 +30,8 @@ public class AirplaneModeChangeReceiver extends BroadcastReceiver {
             message = "AirPlane mode is off";
 
         }
+
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -46,7 +50,16 @@ public class AirplaneModeChangeReceiver extends BroadcastReceiver {
     }
 
     private boolean isAirplaneModeOn(Context applicationContext) {
+
+        Log.d("broadcastmy", "isAirplaneModeOn: "+ Settings.System.getString(applicationContext.getContentResolver(),Settings.Global.AIRPLANE_MODE_ON));
+        Log.d("broadcastmy", "bluetooth: "+ Settings.System.getString(applicationContext.getContentResolver(),Settings.Global.BLUETOOTH_ON));
+        Log.d("broadcastmy", "wifi: "+ Settings.System.getString(applicationContext.getContentResolver(),Settings.Global.WIFI_ON));
+
         return Settings.System.getInt(applicationContext.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
+    }
+
+    private boolean isBluetoothOn(Context applicationContext) {
+        return Settings.System.getInt(applicationContext.getContentResolver(), Settings.Global.BLUETOOTH_ON, 0) != 0;
     }
 
 
