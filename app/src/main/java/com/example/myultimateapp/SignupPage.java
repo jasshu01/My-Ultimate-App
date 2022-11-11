@@ -3,6 +3,7 @@ package com.example.myultimateapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,19 +12,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class SignupPage extends AppCompatActivity {
 
-    TextView signupInstructions;
+    TextView signupInstructions,signupDOB;
     Spinner signupTitle;
-    EditText signupFirstName, signupLastName, signupUsername, signupPassword, signupDOB, signupEmail, signupPhone, signupImage, signupAddress, signupPostal, signupSQ, signupSA;
+    EditText signupFirstName, signupLastName, signupUsername, signupPassword, signupEmail, signupPhone, signupImage, signupAddress, signupPostal, signupSQ, signupSA;
     Button signupBtn;
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -32,7 +36,6 @@ public class SignupPage extends AppCompatActivity {
     Boolean validFirstName = false;
     Boolean validPhone = false;
     Boolean validEmail = false;
-    Boolean validDOB = false;
     Boolean validSQ = false;
     Boolean validSA = false;
 
@@ -68,6 +71,31 @@ public class SignupPage extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         signupTitle.setAdapter(dataAdapter);
 
+
+        signupDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signupDOB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final Calendar newCalendar = Calendar.getInstance();
+                        final DatePickerDialog StartTime = new DatePickerDialog(SignupPage.this, new DatePickerDialog.OnDateSetListener() {
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                Calendar newDate = Calendar.getInstance();
+
+                                newDate.set(year, month, day);
+                                Log.d("newdata", year + "," + (month + 1) + "," + day);
+                                signupDOB.setText(year + "-" + (month + 1) + "-" + day);
+
+                            }
+
+                        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                        StartTime.getDatePicker().setMaxDate(new Date().getTime());
+                        StartTime.show();
+                    }
+                });
+            }
+        });
 
         signupFirstName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -253,32 +281,8 @@ public class SignupPage extends AppCompatActivity {
 
             }
         });
-        signupDOB.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String s = charSequence.toString();
-                signupInstructions.setText("");
-                String[] str = s.split("-");
-
-                if (str.length != 3 || (str[0].length() != 4 || str[1].length() != 2 || str[2].length() != 2)) {
-                    signupInstructions.setText("Enter DOB in format (YYYY-MM-DD)");
-                    validDOB = false;
-                } else {
-                    signupInstructions.setText("");
-                    validDOB = true;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         signupEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -387,10 +391,7 @@ public class SignupPage extends AppCompatActivity {
                         signupInstructions.setText("Enter Valid UserName");
                         return;
                     }
-                    if (!validDOB) {
-                        signupInstructions.setText("Enter Valid DOB");
-                        return;
-                    }
+
                     if (!validEmail) {
                         signupInstructions.setText("Enter Valid Email");
                         return;
@@ -416,7 +417,7 @@ public class SignupPage extends AppCompatActivity {
                         return;
                     }
                 }
-                if (validUsername && validPassword && validFirstName && validPhone && validEmail && validDOB && validSQ && validSA) {
+                if (validUsername && validPassword && validFirstName && validPhone && validEmail && validSQ && validSA) {
 
 
 //                    Log.d("selectedTitle", "onClick: i am here");

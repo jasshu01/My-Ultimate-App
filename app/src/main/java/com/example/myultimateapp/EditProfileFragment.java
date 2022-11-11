@@ -42,7 +42,7 @@ public class EditProfileFragment extends Fragment {
     Boolean validFirstName = true;
     Boolean validPhone = true;
     Boolean validEmail = true;
-    Boolean validDOB = true;
+
     Boolean validSQ = true;
     Boolean validSA = true;
 
@@ -233,32 +233,7 @@ public class EditProfileFragment extends Fragment {
             }
         });
 
-        editProfileDOB.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String s = charSequence.toString();
-                editProfileInstructions.setText("");
-                String[] str = s.split("-");
-
-                if (str.length != 3 || (str[0].length() != 4 || str[1].length() != 2 || str[2].length() != 2)) {
-                    editProfileInstructions.setText("Enter DOB in format (YYYY-MM-DD)");
-                    validDOB = false;
-                } else {
-                    editProfileInstructions.setText("");
-                    validDOB = true;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         editProfileEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -367,10 +342,7 @@ public class EditProfileFragment extends Fragment {
                         editProfileInstructions.setText("Enter Valid UserName");
                         return;
                     }
-                    if (!validDOB) {
-                        editProfileInstructions.setText("Enter Valid DOB");
-                        return;
-                    }
+
                     if (!validEmail) {
                         editProfileInstructions.setText("Enter Valid Email");
                         return;
@@ -393,7 +365,7 @@ public class EditProfileFragment extends Fragment {
                         return;
                     }
                 }
-                if (validUsername && validFirstName && validPhone && validEmail && validDOB && validSQ && validSA) {
+                if (validUsername && validFirstName && validPhone && validEmail  && validSQ && validSA) {
 
 
                     String gender = "Female";
