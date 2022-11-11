@@ -2,6 +2,7 @@ package com.example.myultimateapp;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,20 +17,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 public class EditProfileFragment extends Fragment {
 
-    TextView editProfileInstructions;
+    TextView editProfileInstructions, editProfileDOB;
     Spinner editProfileTitle;
-    EditText editProfileFirstName, editProfileLastName, editProfileUsername, editProfilePassword, editProfileDOB, editProfileEmail, editProfilePhone, editProfileImage, editProfileAddress, editProfilePostal, editProfileSQ, editProfileSA;
+    EditText editProfileFirstName, editProfileLastName, editProfileUsername, editProfilePasswor, editProfileEmail, editProfilePhone, editProfileImage, editProfileAddress, editProfilePostal, editProfileSQ, editProfileSA;
     Button editProfileBtn;
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -41,6 +45,7 @@ public class EditProfileFragment extends Fragment {
     Boolean validDOB = true;
     Boolean validSQ = true;
     Boolean validSA = true;
+
 
 
     public EditProfileFragment() {
@@ -112,6 +117,25 @@ public class EditProfileFragment extends Fragment {
         editProfileSQ.setText(user.getSecurityquestion());
         editProfileSA.setText(user.getSecurityanswer());
 
+        editProfileDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar newCalendar = Calendar.getInstance();
+                final DatePickerDialog StartTime = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        Calendar newDate = Calendar.getInstance();
+
+                        newDate.set(year, month, day);
+                        Log.d("newdata", year + "," + (month + 1) + "," + day);
+                        editProfileDOB.setText(year + "-" + (month + 1) + "-" + day);
+
+                    }
+
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                StartTime.getDatePicker().setMaxDate(new Date().getTime());
+                StartTime.show();
+            }
+        });
 
         editProfileFirstName.addTextChangedListener(new TextWatcher() {
             @Override

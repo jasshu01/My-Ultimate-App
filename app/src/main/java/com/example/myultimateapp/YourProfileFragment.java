@@ -59,7 +59,7 @@ public class YourProfileFragment extends Fragment {
 
 //        jasshugarg - Jasshu@123
 
-        Log.d("profilepage", "onCreateView: "+user.toString());
+//        Log.d("profilepage", "onCreateView: "+user.toString());
         name.setText("Name: "+user.getTitle()+" "+user.getFirstName()+" "+user.getLastName());
         username.setText("Username: "+user.getUsername());
         email.setText("Email: "+user.getEmail());
