@@ -144,6 +144,10 @@ public class MainPageActivity extends AppCompatActivity {
                         loadFragment(new ReceiveBroadCastFragment());
                         break;
                     }
+                    case R.id.navigationItemWebView: {
+                        loadFragment(new WebViewFragment());
+                        break;
+                    }
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -177,7 +181,7 @@ public class MainPageActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    AirplaneModeChangeReceiver airplaneModeChangeReceiver = new AirplaneModeChangeReceiver();
+//    AirplaneModeChangeReceiver airplaneModeChangeReceiver = new AirplaneModeChangeReceiver();
 //    NetworkChangeBroadcast networkChangeBroadcast = new NetworkChangeBroadcast();
 //
 //    @Override

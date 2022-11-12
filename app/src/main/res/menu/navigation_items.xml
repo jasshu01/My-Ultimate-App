@@ -30,6 +30,9 @@
         android:id="@+id/navigationItemEditProfile"
         android:title="Edit Profile" />
     <item
+        android:id="@+id/navigationItemWebView"
+        android:title="Web View" />
+    <item
         android:id="@+id/navigationItemLogOut"
         android:title="Logout" />
 </menu>
