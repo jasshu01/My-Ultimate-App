@@ -43,47 +43,78 @@ public class SendBroadCastFragment extends Fragment {
         message = view.findViewById(R.id.broadCast_broadcastMessage);
         button = view.findViewById(R.id.broadCast_sendBroadCastMessage);
 
+//        ActivateExternalService();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String msg = String.valueOf(message.getText());
 
-
-                Intent i = new Intent("com.example.mybroadcastreceiverapp.START_MY_SERVICE");
-                i.setPackage("com.example.mybroadcastreceiverapp");
-
-//                i.setComponent(new ComponentName("com.example.mybroadcastreceiverapp", "com.example.mybroadcastreceiverapp.service.MyIntentService"));
-
-                try {
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        getContext().startForegroundService(i);
-                        Log.d("NEWSTACK", "starting service inultimate 1 " + i.getAction());
-
+                Thread t1 = new Thread() {
+                    public void run() {
+                        ActivateExternalService();
                     }
-                    else
-                        getContext().startService(i);
-                    Log.d("NEWSTACK", "starting service inultimate 2 " + i.getAction());
-
-
-
-                } catch (Exception e) {
-                    Log.d("NEWSTACK", e.toString());
+                };
+                Thread t2 = new Thread() {
+                    public void run() {
+                        Intent intent = new Intent();
+                        intent.setAction("com.jasshugarg.ultimateappsender");
+                        intent.putExtra("Broadcast Message", msg);
+                        getContext().sendBroadcast(intent);
+//                        Toast.makeText(getContext(), "Message Broadcasted", Toast.LENGTH_SHORT).show();
+                        message.setText("");
+                    }
+                };
+                    t1.run();
+                try {
+                    t2.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                t2.run();
 
-
-
-                Intent intent = new Intent();
-                intent.setAction("com.jasshugarg.ultimateappsender");
-                intent.putExtra("Broadcast Message", msg);
-                getContext().sendBroadcast(intent);
-                Toast.makeText(getContext(), "Message Broadcasted", Toast.LENGTH_SHORT).show();
-                message.setText("");
+//                if( ActivateExternalService())
+//                {
+//                    Intent intent = new Intent();
+//                    intent.setAction("com.jasshugarg.ultimateappsender");
+//                    intent.putExtra("Broadcast Message", msg);
+//                    getContext().sendBroadcast(intent);
+//                    Toast.makeText(getContext(), "Message Broadcasted", Toast.LENGTH_SHORT).show();
+//                    message.setText("");
+//                }
+//               else{
+//                    Toast.makeText(getContext(), "Some Error , Try Again!", Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
 
 
         return view;
+    }
+
+    public boolean ActivateExternalService() {
+
+
+        Intent i = new Intent("com.example.mybroadcastreceiverapp.START_MY_SERVICE");
+        i.setPackage("com.example.mybroadcastreceiverapp");
+
+//                i.setComponent(new ComponentName("com.example.mybroadcastreceiverapp", "com.example.mybroadcastreceiverapp.service.MyIntentService"));
+
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                getContext().startForegroundService(i);
+                Log.d("NEWSTACK", "starting service inultimate 1 " + i.getAction());
+
+            } else
+                getContext().startService(i);
+            Log.d("NEWSTACK", "starting service inultimate 2 " + i.getAction());
+            return true;
+
+
+        } catch (Exception e) {
+            Log.d("NEWSTACK", e.toString());
+        }
+        return false;
     }
 }
