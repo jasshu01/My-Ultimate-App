@@ -64,7 +64,7 @@ public class SendBroadCastFragment extends Fragment {
                         message.setText("");
                     }
                 };
-                    t1.run();
+                t1.run();
                 try {
                     t2.sleep(500);
                 } catch (InterruptedException e) {
@@ -72,18 +72,6 @@ public class SendBroadCastFragment extends Fragment {
                 }
                 t2.run();
 
-//                if( ActivateExternalService())
-//                {
-//                    Intent intent = new Intent();
-//                    intent.setAction("com.jasshugarg.ultimateappsender");
-//                    intent.putExtra("Broadcast Message", msg);
-//                    getContext().sendBroadcast(intent);
-//                    Toast.makeText(getContext(), "Message Broadcasted", Toast.LENGTH_SHORT).show();
-//                    message.setText("");
-//                }
-//               else{
-//                    Toast.makeText(getContext(), "Some Error , Try Again!", Toast.LENGTH_SHORT).show();
-//                }
 
             }
         });
@@ -97,8 +85,6 @@ public class SendBroadCastFragment extends Fragment {
 
         Intent i = new Intent("com.example.mybroadcastreceiverapp.START_MY_SERVICE");
         i.setPackage("com.example.mybroadcastreceiverapp");
-
-//                i.setComponent(new ComponentName("com.example.mybroadcastreceiverapp", "com.example.mybroadcastreceiverapp.service.MyIntentService"));
 
         try {
 
