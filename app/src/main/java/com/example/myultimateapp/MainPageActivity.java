@@ -218,6 +218,9 @@ public class MainPageActivity extends AppCompatActivity {
             SharedPreferences.Editor ed = sp.edit();
             ed.putString("LoggedInUser", "");
             ed.apply();
+
+            LoginPage.mGoogleSignInClient.signOut();
+
             Intent intent = new Intent(MainPageActivity.this, LoginPage.class);
             startActivity(intent);
         });

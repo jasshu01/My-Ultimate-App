@@ -35,7 +35,8 @@ import java.util.ArrayList;
 
 public class dbHandler extends SQLiteOpenHelper {
 
-    public static String validUserNameCharacters="abcdefghijklmnopqrstuvwxyz1234567890";
+    public static String validUserNameCharacters = "abcdefghijklmnopqrstuvwxyz1234567890";
+
     public dbHandler(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
 
@@ -55,7 +56,7 @@ public class dbHandler extends SQLiteOpenHelper {
     }
 
 
-    public Boolean addUser(UserDetails user,Context context) {
+    public Boolean addUser(UserDetails user, Context context) {
 
 
         SQLiteDatabase db = getWritableDatabase();
@@ -63,13 +64,11 @@ public class dbHandler extends SQLiteOpenHelper {
 
 //        TITLE ,FIRSTNAME ,LASTNAME ,USERNAME ,PASSWORD ,DOB ,GENDER ,EMAIL ,PHONE ,IMAGEURLS ,ADDRESS ,POSTALCODE ,SECURITYQUESTION ,SECURITYANSWER
 
-        if(fetchUserUsingUserName(user.getUsername())!=null)
-        {
-            Log.d("Checking","Username already exists "+fetchUserUsingUserName(user.getUsername()));
+        if (fetchUserUsingUserName(user.getUsername()) != null) {
+            Log.d("Checking", "Username already exists " + fetchUserUsingUserName(user.getUsername()));
             Toast.makeText(context, "Username already exists", Toast.LENGTH_SHORT).show();
             return false;
         }
-
 
 
         contentValues.put("title", user.getTitle());
@@ -90,8 +89,8 @@ public class dbHandler extends SQLiteOpenHelper {
 
         long k = db.insert("USERS", null, contentValues);
         db.close();
-        Log.d("Checking", "addUser: "+k);
-        Log.d("Checking", "addUser: "+ user);
+        Log.d("Checking", "addUser: " + k);
+        Log.d("Checking", "addUser: " + user);
 
 
         return true;
@@ -104,8 +103,8 @@ public class dbHandler extends SQLiteOpenHelper {
         String query = "Select * from USERS where USERNAME=\"" + username + "\"";
         Cursor cursor = db.rawQuery(query, null);
 
-        Log.d("Checking", "fetchUserUsingUserName: "+username);
-        Log.d("Checking", "fetchUserUsingUserName: "+cursor.toString());
+        Log.d("Checking", "fetchUserUsingUserName: " + username);
+        Log.d("Checking", "fetchUserUsingUserName: " + cursor.toString());
 
         if (cursor != null && cursor.moveToFirst()) {
 //       sno, TITLE ,FIRSTNAME ,LASTNAME ,USERNAME ,PASSWORD ,DOB ,GENDER ,EMAIL ,PHONE ,IMAGEURLS ,ADDRESS ,POSTALCODE ,SECURITYQUESTION ,SECURITYANSWER
@@ -130,22 +129,65 @@ public class dbHandler extends SQLiteOpenHelper {
             Log.d("Checking", "fetchUserUsingUserName: no user found");
             return null;
         }
-        Log.d("Checking", "fetchUserUsingUserName: printing user "+user.toString());
+        Log.d("Checking", "fetchUserUsingUserName: printing user " + user.toString());
 
         return user;
     }
 
+    public ArrayList<String> fetchUserUsingEmail(String email) {
 
-    public Boolean updateUser(UserDetails user,Context context) {
-        
-        
+        ArrayList<String> users = new ArrayList<String>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "Select * from USERS where EMAIL=\"" + email + "\"";
+        Cursor cursor = db.rawQuery(query, null);
+
+        Log.d("fetchUserUsingEmail", "fetchUserUsingEmail: " + email);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            do {
+
+
+//                UserDetails user = new UserDetails();
+//       sno, TITLE ,FIRSTNAME ,LASTNAME ,USERNAME ,PASSWORD ,DOB ,GENDER ,EMAIL ,PHONE ,IMAGEURLS ,ADDRESS ,POSTALCODE ,SECURITYQUESTION ,SECURITYANSWER
+//                user.setSno(Integer.parseInt(cursor.getString(0)));
+//                user.setTitle(cursor.getString(1));
+//                user.setFirstName(cursor.getString(2));
+//                user.setLastName(cursor.getString(3));
+//                user.setUsername(cursor.getString(4));
+//                user.setPassword(cursor.getString(5));
+//                user.setDob(cursor.getString(6));
+//                user.setGender(cursor.getString(7));
+//                user.setEmail(cursor.getString(8));
+//                user.setPhone(cursor.getString(9));
+//                user.setImageurls(cursor.getString(10));
+//                user.setAddress(cursor.getString(11));
+//                user.setPostalcode(cursor.getString(12));
+//                user.setSecurityquestion(cursor.getString(13));
+//                user.setSecurityanswer(cursor.getString(14));
+
+                users.add(cursor.getString(4));
+            } while (cursor.moveToNext());
+        } else {
+            Log.d("fetchUserUsingEmail", "fetchUserUsingEmail: no user found");
+            return null;
+        }
+
+        Log.d("fetchUserUsingEmail", String.valueOf(users));
+        return users;
+    }
+
+
+    public Boolean updateUser(UserDetails user, Context context) {
+
+
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        UserDetails fetchedUser=fetchUserUsingUserName(user.getUsername());
-        if(fetchedUser!=null && fetchedUser.getSno()!=user.getSno())
-        {
-            Log.d("Checking","Username already exists "+fetchUserUsingUserName(user.getUsername()));
+        UserDetails fetchedUser = fetchUserUsingUserName(user.getUsername());
+        if (fetchedUser != null && fetchedUser.getSno() != user.getSno()) {
+            Log.d("Checking", "Username already exists " + fetchUserUsingUserName(user.getUsername()));
             Toast.makeText(context, "updating: Username already exists", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -165,7 +207,7 @@ public class dbHandler extends SQLiteOpenHelper {
         contentValues.put("securityquestion", user.getSecurityquestion());
         contentValues.put("securityanswer", user.getSecurityanswer());
 
-        Log.d("updated", "onCreate: "+ user.toString());
+        Log.d("updated", "onCreate: " + user.toString());
 
         db.update("USERS", contentValues, "sno=?", new String[]{String.valueOf(user.getSno())});
         return true;
@@ -175,7 +217,6 @@ public class dbHandler extends SQLiteOpenHelper {
     public void deleteUser(int sno) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("USERS", "sno=?", new String[]{String.valueOf(sno)});
-
     }
 
 
