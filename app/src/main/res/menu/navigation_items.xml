@@ -15,6 +15,9 @@
         android:id="@+id/navigationItemActivities"
         android:title="Suggested Activities" />
     <item
+        android:id="@+id/navigationItemNewActivity"
+        android:title="New Activity" />
+    <item
         android:id="@+id/navigationItemSendBroadcastMessage"
         android:title="Send BroadCast Message" />
     <item

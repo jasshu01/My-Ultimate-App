@@ -148,6 +148,11 @@ public class MainPageActivity extends AppCompatActivity {
                         loadFragment(new WebViewFragment());
                         break;
                     }
+                    case R.id.navigationItemNewActivity: {
+                        Intent intent=new Intent(getApplicationContext(),OneActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
