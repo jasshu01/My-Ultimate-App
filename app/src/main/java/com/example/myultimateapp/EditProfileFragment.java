@@ -376,6 +376,9 @@ public class EditProfileFragment extends Fragment {
 
                     if (handler.updateUser(userUpdated, getContext())) {
                         Toast.makeText(getContext(), "user updated", Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor ed=sp.edit();
+                        ed.putString("LoggedInUser",userUpdated.getUsername());
+                        ed.apply();
 
                         Intent intent = new Intent(getContext(), MainPageActivity.class);
                         startActivity(intent);
