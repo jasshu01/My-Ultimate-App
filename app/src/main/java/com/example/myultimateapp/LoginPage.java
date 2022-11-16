@@ -342,10 +342,31 @@ public class LoginPage extends AppCompatActivity {
                 }
             });
 
+
+
             linearLayout.addView(textView1);
 
         }
 
+        if(usernames.size()==0)
+        {
+            TextView textView1 = new TextView(this);
+            textView1.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView1.setGravity(Gravity.CENTER);
+            textView1.setText("NO ACCOUNT ASSOCIATED WITH THIS GMAIL ACCOUNT");
+            textView1.setPadding(20, 20, 20, 20);
+
+        }
+
+
+        Button dialogUsernamesCancel=dialog.findViewById(R.id.dialogUsernamesCancel);
+        dialogUsernamesCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
 
         Window window = dialog.getWindow();
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT);
