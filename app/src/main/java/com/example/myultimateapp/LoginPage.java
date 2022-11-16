@@ -321,7 +321,17 @@ public class LoginPage extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_associated_usernames_layout);
         dialog.setTitle("Customer Info");
 
+        if(usernames.size()==1)
+        {
+            LoginSuccessful(usernames.get(0));
+            return;
+        }
+
+
+
         LinearLayout linearLayout = dialog.findViewById(R.id.ll_details);
+
+
 
 
         for (int i = 0; i < usernames.size(); i++) {
