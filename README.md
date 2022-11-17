@@ -15,5 +15,6 @@
 * Updating the User Profile
 * Viewing the User Profile
 * SQLite Database
-
+* Google sign in integrated 
+* passing data to the parent activity without shared preference or forward intents
 
