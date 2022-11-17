@@ -67,7 +67,7 @@ public class ActivitiesFragmentAdapter extends RecyclerView.Adapter<ActivitiesFr
         this.context = context;
         localDataSet = dataSet;
 
-        Log.d("displayingActivity", "ActivitiesFragmentAdapter: "+localDataSet);
+//        Log.d("displayingActivity", "ActivitiesFragmentAdapter: "+localDataSet);
 
     }
 

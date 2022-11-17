@@ -18,7 +18,8 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
 
     public Fragment createFragment(int position) {
         if (position == 0)
-            return new JokesFragment();
+            return new ShoppingFragment();
+//            return new JokesFragment();
         if (position == 1)
             return new DogImagesFragment();
         if (position == 2)

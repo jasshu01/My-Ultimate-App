@@ -73,7 +73,7 @@ public class ActivitiesFragment extends Fragment {
         ActivitiesFragmentAdapter adapter = new ActivitiesFragmentAdapter(context, activities);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
-        Log.d("displayingActivities", "onViewCreated: " + activities);
+//        Log.d("displayingActivities", "onViewCreated: " + activities);
 
 
     }

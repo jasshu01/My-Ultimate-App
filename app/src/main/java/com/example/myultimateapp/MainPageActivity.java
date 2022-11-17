@@ -148,8 +148,12 @@ public class MainPageActivity extends AppCompatActivity {
                         loadFragment(new WebViewFragment());
                         break;
                     }
+                    case R.id.navigationItemShoppingArea: {
+                        loadFragment(new ShoppingFragment());
+                        break;
+                    }
                     case R.id.navigationItemNewActivity: {
-                        Intent intent=new Intent(getApplicationContext(),OneActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), OneActivity.class);
                         startActivity(intent);
                         break;
                     }
