@@ -29,6 +29,17 @@ public class Product {
     String title, description, brand, category;
     Bitmap thumbnail;
     double rating;
+    ArrayList<Bitmap> images;
+    ArrayList<String> imagesURL;
+    double discount;
+
+    public ArrayList<String> getImagesURL() {
+        return imagesURL;
+    }
+
+    public void setImagesURL(ArrayList<String> imagesURL) {
+        this.imagesURL = imagesURL;
+    }
 
     public double getDiscount() {
         return discount;
@@ -37,9 +48,6 @@ public class Product {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
-
-    double discount;
-    ArrayList<Bitmap> images;
 
     public Bitmap getThumbnail() {
         return thumbnail;

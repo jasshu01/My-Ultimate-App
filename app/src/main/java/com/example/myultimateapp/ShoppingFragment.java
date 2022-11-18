@@ -160,6 +160,14 @@ public class ShoppingFragment extends Fragment {
                     product.setThumbnail(thumbnail);
 
 
+                    JSONArray arrJson = response.getJSONArray("images");
+                    ArrayList<String> imagesURL=new ArrayList<>();
+                    for(int i = 0; i < arrJson.length(); i++)
+                        imagesURL.add(arrJson.getString(i));
+
+                    product.setImagesURL(imagesURL);
+
+
 //                    data.get(product.getCategory()).add(product);
 //                    Log.d("fetchedproducts", product.toString());
 
@@ -189,6 +197,8 @@ public class ShoppingFragment extends Fragment {
         protected Pair<Product, Bitmap> doInBackground(Pair<Product, String>... pairs) {
             Bitmap thumbnail = null;
 
+
+
             InputStream inputStream = null;
             try {
                 inputStream = new URL(pairs[0].second).openConnection().getInputStream();
@@ -197,6 +207,10 @@ public class ShoppingFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
+
+
 
 
             return new Pair<>(pairs[0].first, thumbnail);
