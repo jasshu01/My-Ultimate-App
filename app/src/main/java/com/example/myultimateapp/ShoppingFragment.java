@@ -47,7 +47,7 @@ public class ShoppingFragment extends Fragment {
 
     TreeMap<String, ArrayList<Product>> data = new TreeMap<String, ArrayList<Product>>();
     RecyclerView shoppingRecyclerView;
-    int totalProducts = 12;
+    int totalProducts = 19;
     RequestQueue requestQueue;
     ShoppingAdapter adapter1;
 
@@ -83,24 +83,9 @@ public class ShoppingFragment extends Fragment {
 //
 
 
-        adapter1 = new ShoppingAdapter(data);
-        shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        shoppingRecyclerView.setAdapter(adapter1);
-
-        return view;
-
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
 //        adapter1 = new ShoppingAdapter(data);
 //        shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        shoppingRecyclerView.setAdapter(adapter1);
-
-//        https://dummyjson.com/products
 
         requestQueue = Volley.newRequestQueue(getContext());
         String apiURL = "https://dummyjson.com/products";
@@ -112,9 +97,23 @@ public class ShoppingFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-
+        return view;
 
     }
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//
+////        adapter1 = new ShoppingAdapter(data);
+////        shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+////        shoppingRecyclerView.setAdapter(adapter1);
+//
+////        https://dummyjson.com/products
+//
+//
+//    }
 
     public void fetchProducts(String apiURL) {
 
@@ -219,12 +218,12 @@ public class ShoppingFragment extends Fragment {
             data.put(myProduct.getCategory(), myProducts);
 
 
-            if (myProduct.getId() == totalProducts)
-            {
+            if (myProduct.getId() == totalProducts) {
                 ShoppingAdapter adapter = new ShoppingAdapter(data);
 //                 adapter1 = new ShoppingAdapter(data);
                 shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 shoppingRecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
 
             }
 //

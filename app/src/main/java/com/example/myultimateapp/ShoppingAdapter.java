@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     private static ArrayList<Pair<String, ArrayList<Product>>> localDataSet = new ArrayList<Pair<String, ArrayList<Product>>>(0);
     private static Context context;
     private static String Category;
-
+private static TreeMap<String, ArrayList<Product>> dataToSend;
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView categoryName;
         RecyclerView categoryRecyclerView;
@@ -39,16 +40,16 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-
-        }
+                    }
 
 
     }
 
     public ShoppingAdapter(TreeMap<String, ArrayList<Product>> dataSet) {
-        if(localDataSet!=null)
-        localDataSet.clear();
+        if (localDataSet != null)
+            localDataSet.clear();
 
+        dataToSend=dataSet;
         Set<Map.Entry<String, ArrayList<Product>>> keys = dataSet.entrySet();
 
 
@@ -92,24 +93,33 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
 
 
-        Log.d("displayinActivity3", "\n\n\ncategory " + localDataSet.get(position).first);
+        Log.d("displayingActivity6", "\n\n\ncategory " + localDataSet.get(position).first);
+        Log.d("currpos", "\n\n\ncategory " + localDataSet.get(position).first);
         Log.d("displayingActivity2", "\n\n\ncategory " + localDataSet.get(position).first);
 
-        CategoryAdapter childItemAdapter = new CategoryAdapter(localDataSet.get(position).second);
+
+//        int pos=viewHolder.getBindingAdapterPosition();
+        int pos = position;
+
+        viewHolder.categoryName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, localDataSet.get(viewHolder.getAbsoluteAdapterPosition()).first, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        viewHolder.categoryName.setText(localDataSet.get(pos).first);
+        CategoryAdapter childItemAdapter = new CategoryAdapter(dataToSend,localDataSet.get(pos).first);
+//        viewHolder.categoryName.setText(localDataSet.get(position).first);
+//        CategoryAdapter childItemAdapter = new CategoryAdapter(localDataSet.get(position).second);
         viewHolder.categoryRecyclerView.setLayoutManager(layoutManager);
-
-//        for(int i=0;i<localDataSet.get(position).second.size();i++)
-//        {
-//            Log.d("displayingActivity2", "shoppingadapter  " + localDataSet.get(position).second.get(i).toString());
-//        }
-
-
-        viewHolder.categoryName.setText(localDataSet.get(position).first);
         viewHolder.categoryRecyclerView.setAdapter(childItemAdapter);
-        viewHolder.categoryRecyclerView.setItemViewCacheSize(0);
+        childItemAdapter.notifyDataSetChanged();
+//        viewHolder.categoryRecyclerView.setItemViewCacheSize(0);
 
     }
 
