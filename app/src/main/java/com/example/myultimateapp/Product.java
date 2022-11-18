@@ -29,19 +29,17 @@ public class Product {
     String title, description, brand, category;
     Bitmap thumbnail;
     double rating;
-    ArrayList<Bitmap> images;
 
-    public Product(int id, int price, String title, String description, String brand, String category, Bitmap thumbnail, double rating, ArrayList<Bitmap> images) {
-        this.id = id;
-        this.price = price;
-        this.title = title;
-        this.description = description;
-        this.brand = brand;
-        this.category = category;
-        this.thumbnail = thumbnail;
-        this.rating = rating;
-        this.images = images;
+    public double getDiscount() {
+        return discount;
     }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    double discount;
+    ArrayList<Bitmap> images;
 
     public Bitmap getThumbnail() {
         return thumbnail;

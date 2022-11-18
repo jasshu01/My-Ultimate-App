@@ -47,7 +47,7 @@ public class ShoppingFragment extends Fragment {
 
     TreeMap<String, ArrayList<Product>> data = new TreeMap<String, ArrayList<Product>>();
     RecyclerView shoppingRecyclerView;
-    int totalProducts = 10;
+    int totalProducts = 30;
     RequestQueue requestQueue;
     ShoppingAdapter adapter1;
 
@@ -156,6 +156,7 @@ public class ShoppingFragment extends Fragment {
                     product.setDescription(response.getString("description"));
                     product.setPrice(Integer.parseInt(response.getString("price")));
                     product.setRating(Double.parseDouble(response.getString("rating")));
+                    product.setDiscount(Double.parseDouble(response.getString("discountPercentage")));
                     product.setThumbnail(thumbnail);
 
 
@@ -218,7 +219,8 @@ public class ShoppingFragment extends Fragment {
             data.put(myProduct.getCategory(), myProducts);
 
 
-            if (myProduct.getId() == totalProducts) {
+//            if (myProduct.getId() == totalProducts)
+            {
                 ShoppingAdapter adapter = new ShoppingAdapter(data);
 //                 adapter1 = new ShoppingAdapter(data);
                 shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

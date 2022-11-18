@@ -1,5 +1,6 @@
 package com.example.myultimateapp;
 
+import static java.lang.Math.round;
 import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
@@ -119,7 +121,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         String productdetails = "<strong>"+ localDataSet.get(category).get(pos).getBrand() + "-" + localDataSet.get(category).get(pos).getTitle() +"</strong>" + "\n" + localDataSet.get(category).get(pos).getDescription();
 
 
-        String priceText= "<strong><i>"+"$" + String.valueOf(localDataSet.get(category).get(pos).getPrice())+"</i></strong>";
+        double discountVal=localDataSet.get(category).get(pos).getDiscount();
+        double priceVal=localDataSet.get(category).get(pos).getPrice();
+//        double finalPriceVal=Math.round((1-discountVal/100)*priceVal);
+        double finalPriceVal= Double.parseDouble(new DecimalFormat("0.00").format((100.00-discountVal)*priceVal/100));
+        String priceText= "<strong><i><s>$" + String.valueOf(priceVal)+"</s></i></strong>"+ "<strong><i>"+"$" + String.valueOf(finalPriceVal)+"</i></strong>";
 
         details.setText(Html.fromHtml(productdetails));
         price.setText(Html.fromHtml(priceText));
@@ -129,7 +135,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(thumbnail.getContext(), category, Toast.LENGTH_SHORT).show();
+                Toast.makeText(thumbnail.getContext(), localDataSet.get(category).get(pos).getTitle(), Toast.LENGTH_SHORT).show();
 
             }
         });
