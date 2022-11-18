@@ -35,6 +35,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
         public ViewHolder(View view) {
             super(view);
 
+
             categoryName = view.findViewById(R.id.shoppingProductCategory);
             categoryRecyclerView = view.findViewById(R.id.categoryRecyclerView);
         }
