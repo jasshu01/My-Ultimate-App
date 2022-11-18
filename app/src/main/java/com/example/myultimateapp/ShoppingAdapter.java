@@ -21,12 +21,9 @@ import java.util.TreeMap;
 
 public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHolder> {
 
-    //    private static TreeMap<String, ArrayList<Product>> localDataSet;
     private static ArrayList<Pair<String, ArrayList<Product>>> localDataSet = new ArrayList<Pair<String, ArrayList<Product>>>(0);
     private static Context context;
     private static String Category;
-//    TextView categoryName;
-//    RecyclerView categoryRecyclerView;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView categoryName;
@@ -49,16 +46,17 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     }
 
     public ShoppingAdapter(TreeMap<String, ArrayList<Product>> dataSet) {
-
-//        localDataSet = dataSet;
+        if(localDataSet!=null)
+        localDataSet.clear();
 
         Set<Map.Entry<String, ArrayList<Product>>> keys = dataSet.entrySet();
 
 
         for (Map.Entry<String, ArrayList<Product>> key :
                 keys) {
+
             Pair<String, ArrayList<Product>> pair = new Pair<String, ArrayList<Product>>(key.getKey(), key.getValue());
-            Log.d("displayingActivity", pair.toString());
+            Log.d("displayingActivity4", pair.toString());
             localDataSet.add(pair);
         }
 
@@ -67,34 +65,51 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
 
     }
 
-    // Create new views (invoked by the layout manager)
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.fragment_shopping_view, viewGroup, false);
 
-
-        RecyclerView categoryRecyclerView;
         context = viewGroup.getContext();
-//        categoryName = view.findViewById(R.id.shoppingProductCategory);
-//        categoryRecyclerView = view.findViewById(R.id.categoryRecyclerView);
+
 
         return new ViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
 
+
+        Log.d("displayinActivity3", "\n\n\ncategory " + localDataSet.get(position).first);
+        Log.d("displayingActivity2", "\n\n\ncategory " + localDataSet.get(position).first);
+
         CategoryAdapter childItemAdapter = new CategoryAdapter(localDataSet.get(position).second);
         viewHolder.categoryRecyclerView.setLayoutManager(layoutManager);
+
+//        for(int i=0;i<localDataSet.get(position).second.size();i++)
+//        {
+//            Log.d("displayingActivity2", "shoppingadapter  " + localDataSet.get(position).second.get(i).toString());
+//        }
+
+
         viewHolder.categoryName.setText(localDataSet.get(position).first);
         viewHolder.categoryRecyclerView.setAdapter(childItemAdapter);
-
+        viewHolder.categoryRecyclerView.setItemViewCacheSize(0);
 
     }
 

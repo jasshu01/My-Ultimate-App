@@ -47,9 +47,9 @@ public class ShoppingFragment extends Fragment {
 
     TreeMap<String, ArrayList<Product>> data = new TreeMap<String, ArrayList<Product>>();
     RecyclerView shoppingRecyclerView;
-    int totalProducts = 50;
+    int totalProducts = 12;
     RequestQueue requestQueue;
-
+    ShoppingAdapter adapter1;
 
     public ShoppingFragment() {
         // Required empty public constructor
@@ -65,7 +65,7 @@ public class ShoppingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 //
-//        shoppingRecyclerView = view.findViewById(R.id.shoppingRecyclerView);
+        shoppingRecyclerView = view.findViewById(R.id.shoppingRecyclerView);
 //
 //
 ////        https://dummyjson.com/products
@@ -82,6 +82,11 @@ public class ShoppingFragment extends Fragment {
 //        }
 //
 
+
+        adapter1 = new ShoppingAdapter(data);
+        shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shoppingRecyclerView.setAdapter(adapter1);
+
         return view;
 
     }
@@ -90,12 +95,10 @@ public class ShoppingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        shoppingRecyclerView = view.findViewById(R.id.shoppingRecyclerView);
 
-
-        ShoppingAdapter adapter = new ShoppingAdapter(data);
-        shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        shoppingRecyclerView.setAdapter(adapter);
+//        adapter1 = new ShoppingAdapter(data);
+//        shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        shoppingRecyclerView.setAdapter(adapter1);
 
 //        https://dummyjson.com/products
 
@@ -153,11 +156,12 @@ public class ShoppingFragment extends Fragment {
                     product.setId(Integer.parseInt(response.getString("id")));
                     product.setDescription(response.getString("description"));
                     product.setPrice(Integer.parseInt(response.getString("price")));
+                    product.setRating(Double.parseDouble(response.getString("rating")));
                     product.setThumbnail(thumbnail);
 
 
 //                    data.get(product.getCategory()).add(product);
-//                    Log.d("fetchedproducts", data.toString());
+//                    Log.d("fetchedproducts", product.toString());
 
                     Pair<Product, String> pair = new Pair<Product, String>(product, response.getString("thumbnail"));
                     new MyTask().execute(pair);
@@ -212,24 +216,24 @@ public class ShoppingFragment extends Fragment {
             }
 
             myProducts.add(myProduct);
-
-//            data.put(myProduct.getCategory(), myProducts);
-//                data.clear();
-
             data.put(myProduct.getCategory(), myProducts);
-//
-
-            if (myProduct.getId() == totalProducts) {
-//
 
 
+            if (myProduct.getId() == totalProducts)
+            {
                 ShoppingAdapter adapter = new ShoppingAdapter(data);
+//                 adapter1 = new ShoppingAdapter(data);
                 shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 shoppingRecyclerView.setAdapter(adapter);
 
-//                new ShoppingAdapter(data)
-//                adapter.notifyDataSetChanged();
             }
+//
+//            if (adapter1 != null)
+//                adapter1.notifyDataSetChanged();
+//            else{
+//                adapter1=new ShoppingAdapter(data);
+//                shoppingRecyclerView.setAdapter(adapter1);
+//            }
         }
     }
 
