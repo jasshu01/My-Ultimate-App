@@ -32,7 +32,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     TextView details, rating, price;
     ImageView thumbnail;
     CardView productCard;
-    int color;
+    int color, textColor;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -54,8 +54,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
         Random rnd = new Random();
-        color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-
+        color = Color.argb(100, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        textColor =  Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         this.category = category;
         localDataSet = dataSet;
 
@@ -106,6 +106,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Log.d("displayingActivity2", "categoryadapter: " + getItemCount());
         Log.d("displayingActivity2", "categoryadapter: " + localDataSet.get(category).get(position).toString());
         productCard.setCardBackgroundColor(color);
+        details.setTextColor(textColor);
 //        int pos = viewHolder.getAbsoluteAdapterPosition();
         int pos = position;
 
