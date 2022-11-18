@@ -5,6 +5,7 @@ import static java.lang.Thread.sleep;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -54,8 +55,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
         Random rnd = new Random();
-        color = Color.argb(100, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        textColor =  Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        color = Color.argb(10, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+//        textColor =  Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        textColor=Color.BLACK;
+
         this.category = category;
         localDataSet = dataSet;
 
@@ -111,10 +114,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         int pos = position;
 
 
-        String productdetails = localDataSet.get(category).get(pos).getBrand() + "-" + localDataSet.get(category).get(pos).getTitle() + "\n" + localDataSet.get(category).get(pos).getDescription();
-        productdetails = productdetails.substring(0, 50);
-        details.setText(productdetails);
-        price.setText("$" + String.valueOf(localDataSet.get(category).get(pos).getPrice()));
+
+
+        String productdetails = "<strong>"+ localDataSet.get(category).get(pos).getBrand() + "-" + localDataSet.get(category).get(pos).getTitle() +"</strong>" + "\n" + localDataSet.get(category).get(pos).getDescription();
+
+
+        String priceText= "<strong><i>"+"$" + String.valueOf(localDataSet.get(category).get(pos).getPrice())+"</i></strong>";
+
+        details.setText(Html.fromHtml(productdetails));
+        price.setText(Html.fromHtml(priceText));
         rating.setText(String.valueOf(localDataSet.get(category).get(pos).getRating()));
         thumbnail.setImageBitmap(localDataSet.get(category).get(pos).getThumbnail());
 

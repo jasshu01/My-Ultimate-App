@@ -47,7 +47,7 @@ public class ShoppingFragment extends Fragment {
 
     TreeMap<String, ArrayList<Product>> data = new TreeMap<String, ArrayList<Product>>();
     RecyclerView shoppingRecyclerView;
-    int totalProducts = 19;
+    int totalProducts = 10;
     RequestQueue requestQueue;
     ShoppingAdapter adapter1;
 

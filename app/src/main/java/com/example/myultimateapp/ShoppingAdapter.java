@@ -2,6 +2,7 @@ package com.example.myultimateapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.provider.UserDictionary;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -25,7 +26,8 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     private static ArrayList<Pair<String, ArrayList<Product>>> localDataSet = new ArrayList<Pair<String, ArrayList<Product>>>(0);
     private static Context context;
     private static String Category;
-private static TreeMap<String, ArrayList<Product>> dataToSend;
+    private static TreeMap<String, ArrayList<Product>> dataToSend;
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView categoryName;
         RecyclerView categoryRecyclerView;
@@ -40,7 +42,7 @@ private static TreeMap<String, ArrayList<Product>> dataToSend;
 
         @Override
         public void onClick(View view) {
-                    }
+        }
 
 
     }
@@ -49,7 +51,7 @@ private static TreeMap<String, ArrayList<Product>> dataToSend;
         if (localDataSet != null)
             localDataSet.clear();
 
-        dataToSend=dataSet;
+        dataToSend = dataSet;
         Set<Map.Entry<String, ArrayList<Product>>> keys = dataSet.entrySet();
 
 
@@ -112,8 +114,9 @@ private static TreeMap<String, ArrayList<Product>> dataToSend;
 
             }
         });
-        viewHolder.categoryName.setText(localDataSet.get(pos).first);
-        CategoryAdapter childItemAdapter = new CategoryAdapter(dataToSend,localDataSet.get(pos).first);
+        String category=localDataSet.get(pos).first;
+        viewHolder.categoryName.setText(category.substring(0, 1).toUpperCase() + category.substring(1));
+        CategoryAdapter childItemAdapter = new CategoryAdapter(dataToSend, localDataSet.get(pos).first);
 //        viewHolder.categoryName.setText(localDataSet.get(position).first);
 //        CategoryAdapter childItemAdapter = new CategoryAdapter(localDataSet.get(position).second);
         viewHolder.categoryRecyclerView.setLayoutManager(layoutManager);
