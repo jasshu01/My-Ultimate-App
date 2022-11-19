@@ -17,4 +17,5 @@
 * SQLite Database
 * Google sign in integrated 
 * passing data to the parent activity without shared preference or forward intents
+* Nested Recycler View - fetching data from API and displaying
 
