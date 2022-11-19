@@ -134,7 +134,81 @@ public class dbHandler extends SQLiteOpenHelper {
         return user;
     }
 
-    public ArrayList<String> fetchUserUsingEmail(String email) {
+    public UserDetails fetchUserUsingPhoneNumber(String phoneNumber) {
+        UserDetails user = new UserDetails();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "Select * from USERS where PHONE=\"" + phoneNumber + "\"";
+        Cursor cursor = db.rawQuery(query, null);
+
+        Log.d("Checking", "fetchUserUsingUserName: " + phoneNumber);
+        Log.d("Checking", "fetchUserUsingUserName: " + cursor.toString());
+
+        if (cursor != null && cursor.moveToFirst()) {
+//       sno, TITLE ,FIRSTNAME ,LASTNAME ,USERNAME ,PASSWORD ,DOB ,GENDER ,EMAIL ,PHONE ,IMAGEURLS ,ADDRESS ,POSTALCODE ,SECURITYQUESTION ,SECURITYANSWER
+            user.setSno(Integer.parseInt(cursor.getString(0)));
+            user.setTitle(cursor.getString(1));
+            user.setFirstName(cursor.getString(2));
+            user.setLastName(cursor.getString(3));
+            user.setUsername(cursor.getString(4));
+            user.setPassword(cursor.getString(5));
+            user.setDob(cursor.getString(6));
+            user.setGender(cursor.getString(7));
+            user.setEmail(cursor.getString(8));
+            user.setPhone(cursor.getString(9));
+            user.setImageurls(cursor.getString(10));
+            user.setAddress(cursor.getString(11));
+            user.setPostalcode(cursor.getString(12));
+            user.setSecurityquestion(cursor.getString(13));
+            user.setSecurityanswer(cursor.getString(14));
+
+
+        } else {
+            Log.d("Checking", "fetchUserUsingUserName: no user found");
+            return null;
+        }
+        Log.d("Checking", "fetchUserUsingUserName: printing user " + user.toString());
+
+        return user;
+    }
+
+    public UserDetails fetchUserUsingEmail(String email) {
+        UserDetails user = new UserDetails();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "Select * from USERS where EMAIL=\"" + email + "\"";
+        Cursor cursor = db.rawQuery(query, null);
+
+        Log.d("Checking", "fetchUserUsingUserName: " + email);
+        Log.d("Checking", "fetchUserUsingUserName: " + cursor.toString());
+
+        if (cursor != null && cursor.moveToFirst()) {
+//       sno, TITLE ,FIRSTNAME ,LASTNAME ,USERNAME ,PASSWORD ,DOB ,GENDER ,EMAIL ,PHONE ,IMAGEURLS ,ADDRESS ,POSTALCODE ,SECURITYQUESTION ,SECURITYANSWER
+            user.setSno(Integer.parseInt(cursor.getString(0)));
+            user.setTitle(cursor.getString(1));
+            user.setFirstName(cursor.getString(2));
+            user.setLastName(cursor.getString(3));
+            user.setUsername(cursor.getString(4));
+            user.setPassword(cursor.getString(5));
+            user.setDob(cursor.getString(6));
+            user.setGender(cursor.getString(7));
+            user.setEmail(cursor.getString(8));
+            user.setPhone(cursor.getString(9));
+            user.setImageurls(cursor.getString(10));
+            user.setAddress(cursor.getString(11));
+            user.setPostalcode(cursor.getString(12));
+            user.setSecurityquestion(cursor.getString(13));
+            user.setSecurityanswer(cursor.getString(14));
+
+
+        } else {
+            Log.d("Checking", "fetchUserUsingUserName: no user found");
+            return null;
+        }
+        Log.d("Checking", "fetchUserUsingUserName: printing user " + user.toString());
+
+        return user;
+    }
+
+    public ArrayList<String> fetchUsersUsingEmail(String email) {
 
         ArrayList<String> users = new ArrayList<String>();
 
@@ -218,6 +292,7 @@ public class dbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("USERS", "sno=?", new String[]{String.valueOf(sno)});
     }
+
 
 
 }

@@ -184,25 +184,31 @@ public class LoginPage extends AppCompatActivity {
 //                }
 
 
-                String final_username, final_password;
-                final_username = String.valueOf(userName.getText());
+                String final_id, final_password;
+                final_id = String.valueOf(userName.getText());
 
                 final_password = String.valueOf(password.getText());
+                UserDetails loggingInUser = handler.fetchUserUsingUserName(final_id);
 
 
-                UserDetails user = handler.fetchUserUsingUserName(final_username);
-                if (user == null) {
+                if (loggingInUser == null) {
+                    loggingInUser = handler.fetchUserUsingPhoneNumber(final_id);
+                    if (loggingInUser == null) {
+                        loggingInUser = handler.fetchUserUsingEmail(final_id);
+                        if (loggingInUser == null) {
+                            Toast.makeText(LoginPage.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+
+
+                if (!loggingInUser.getPassword().equals(final_password)) {
                     Toast.makeText(LoginPage.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-
-                if (!user.getPassword().equals(final_password)) {
-                    Toast.makeText(LoginPage.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                LoginSuccessful(final_username);
+                LoginSuccessful(loggingInUser.getUsername());
 
 
             }
@@ -286,7 +292,7 @@ public class LoginPage extends AppCompatActivity {
 
             String personEmail = account.getEmail();
 
-            ArrayList<String> associatedAccounts = handler.fetchUserUsingEmail(personEmail);
+            ArrayList<String> associatedAccounts = handler.fetchUsersUsingEmail(personEmail);
 
             CreateDialogBox(associatedAccounts);
 
@@ -321,17 +327,13 @@ public class LoginPage extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_associated_usernames_layout);
         dialog.setTitle("Customer Info");
 
-        if(usernames.size()==1)
-        {
+        if (usernames.size() == 1) {
             LoginSuccessful(usernames.get(0));
             return;
         }
 
 
-
         LinearLayout linearLayout = dialog.findViewById(R.id.ll_details);
-
-
 
 
         for (int i = 0; i < usernames.size(); i++) {
@@ -353,13 +355,11 @@ public class LoginPage extends AppCompatActivity {
             });
 
 
-
             linearLayout.addView(textView1);
 
         }
 
-        if(usernames.size()==0)
-        {
+        if (usernames.size() == 0) {
             TextView textView1 = new TextView(this);
             textView1.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -370,7 +370,7 @@ public class LoginPage extends AppCompatActivity {
         }
 
 
-        Button dialogUsernamesCancel=dialog.findViewById(R.id.dialogUsernamesCancel);
+        Button dialogUsernamesCancel = dialog.findViewById(R.id.dialogUsernamesCancel);
         dialogUsernamesCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
