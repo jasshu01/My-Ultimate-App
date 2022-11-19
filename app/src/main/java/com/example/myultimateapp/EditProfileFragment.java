@@ -47,7 +47,6 @@ public class EditProfileFragment extends Fragment {
     Boolean validSA = true;
 
 
-
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -244,6 +243,16 @@ public class EditProfileFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String email = charSequence.toString();
                 editProfileInstructions.setText("");
+
+                Log.d("emailCheck", email);
+
+                if (handler.fetchUsersUsingEmail(email) != null) {
+
+                    editProfileInstructions.setText("An account already exists with this email account");
+                    validEmail = false;
+                    return;
+                }
+
                 if (email.matches(emailPattern) && email.length() > 0) {
                     editProfileInstructions.setText("");
                     validEmail = true;
@@ -365,7 +374,7 @@ public class EditProfileFragment extends Fragment {
                         return;
                     }
                 }
-                if (validUsername && validFirstName && validPhone && validEmail  && validSQ && validSA) {
+                if (validUsername && validFirstName && validPhone && validEmail && validSQ && validSA) {
 
 
                     String gender = "Female";
@@ -376,8 +385,8 @@ public class EditProfileFragment extends Fragment {
 
                     if (handler.updateUser(userUpdated, getContext())) {
                         Toast.makeText(getContext(), "user updated", Toast.LENGTH_SHORT).show();
-                        SharedPreferences.Editor ed=sp.edit();
-                        ed.putString("LoggedInUser",userUpdated.getUsername());
+                        SharedPreferences.Editor ed = sp.edit();
+                        ed.putString("LoggedInUser", userUpdated.getUsername());
                         ed.apply();
 
                         Intent intent = new Intent(getContext(), MainPageActivity.class);
