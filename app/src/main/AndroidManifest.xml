@@ -25,9 +25,9 @@
         <activity
             android:name=".TwoActivity"
 
+            android:exported="true"
             android:parentActivityName=".OneActivity"
-            android:theme="@style/Theme2.MyUltimateApp"
-            android:exported="true">
+            android:theme="@style/Theme2.MyUltimateApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,10 +40,10 @@
         </activity>
         <activity
 
-            android:parentActivityName=".MainPageActivity"
-            android:theme="@style/Theme2.MyUltimateApp"
             android:name=".OneActivity"
-            android:exported="true">
+            android:exported="true"
+            android:parentActivityName=".MainPageActivity"
+            android:theme="@style/Theme2.MyUltimateApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

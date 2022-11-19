@@ -125,7 +125,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         double priceVal=localDataSet.get(category).get(pos).getPrice();
 //        double finalPriceVal=Math.round((1-discountVal/100)*priceVal);
         double finalPriceVal= Double.parseDouble(new DecimalFormat("0.00").format((100.00-discountVal)*priceVal/100));
-        String priceText= "<strong><i><s>$" + String.valueOf(priceVal)+"</s></i></strong>"+ "<strong><i>"+"$" + String.valueOf(finalPriceVal)+"</i></strong>";
+        String priceText= "<strong><i><s>$" + String.valueOf(priceVal)+"</s></i></strong>"+ " <strong><i>"+"$" + String.valueOf(finalPriceVal)+"</i></strong>";
 
         details.setText(Html.fromHtml(productdetails));
         price.setText(Html.fromHtml(priceText));
