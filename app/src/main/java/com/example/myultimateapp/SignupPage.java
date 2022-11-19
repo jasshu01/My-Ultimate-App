@@ -293,6 +293,14 @@ public class SignupPage extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String email = charSequence.toString();
                 signupInstructions.setText("");
+
+                if(handler.fetchUsersUsingEmail(email)!=null)
+                {
+                    signupInstructions.setText("An account already exists with this email account");
+                    validEmail = false;
+                    return;
+                }
+
                 if (email.matches(emailPattern) && email.length() > 0) {
                     signupInstructions.setText("");
                     validEmail = true;
