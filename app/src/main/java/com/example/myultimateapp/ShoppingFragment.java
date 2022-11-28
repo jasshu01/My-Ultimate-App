@@ -20,6 +20,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -50,6 +51,7 @@ public class ShoppingFragment extends Fragment {
     int totalProducts = 30;
     RequestQueue requestQueue;
     ShoppingAdapter adapter1;
+    ProgressBar shoppingAreaProgress;
 
     public ShoppingFragment() {
         // Required empty public constructor
@@ -60,12 +62,15 @@ public class ShoppingFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 //
         shoppingRecyclerView = view.findViewById(R.id.shoppingRecyclerView);
+        shoppingAreaProgress = view.findViewById(R.id.shoppingAreaProgress);
+        shoppingRecyclerView.setVisibility(View.GONE);
 //
 //
 ////        https://dummyjson.com/products
@@ -161,8 +166,8 @@ public class ShoppingFragment extends Fragment {
 
 
                     JSONArray arrJson = response.getJSONArray("images");
-                    ArrayList<String> imagesURL=new ArrayList<>();
-                    for(int i = 0; i < arrJson.length(); i++)
+                    ArrayList<String> imagesURL = new ArrayList<>();
+                    for (int i = 0; i < arrJson.length(); i++)
                         imagesURL.add(arrJson.getString(i));
 
                     product.setImagesURL(imagesURL);
@@ -198,7 +203,6 @@ public class ShoppingFragment extends Fragment {
             Bitmap thumbnail = null;
 
 
-
             InputStream inputStream = null;
             try {
                 inputStream = new URL(pairs[0].second).openConnection().getInputStream();
@@ -207,10 +211,6 @@ public class ShoppingFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
-
-
 
 
             return new Pair<>(pairs[0].first, thumbnail);
@@ -226,29 +226,25 @@ public class ShoppingFragment extends Fragment {
             ArrayList<Product> myProducts = new ArrayList<Product>();
             if (data.get(myProduct.getCategory()) != null) {
                 myProducts = data.get(myProduct.getCategory());
-//                data.get(myProduct.getCategory()).clear();
             }
 
             myProducts.add(myProduct);
             data.put(myProduct.getCategory(), myProducts);
 
 
-//            if (myProduct.getId() == totalProducts)
-            {
+            if (myProduct.getId() == totalProducts) {
+                shoppingAreaProgress.setVisibility(View.GONE);
                 ShoppingAdapter adapter = new ShoppingAdapter(data);
-//                 adapter1 = new ShoppingAdapter(data);
                 shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 shoppingRecyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
+
+                shoppingRecyclerView.setVisibility(View.VISIBLE);
             }
-//
-//            if (adapter1 != null)
-//                adapter1.notifyDataSetChanged();
-//            else{
-//                adapter1=new ShoppingAdapter(data);
-//                shoppingRecyclerView.setAdapter(adapter1);
-//            }
+
+
+
         }
     }
 
