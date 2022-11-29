@@ -25,7 +25,7 @@ import java.util.List;
 
 public class SignupPage extends AppCompatActivity {
 
-    TextView signupInstructions,signupDOB;
+    TextView signupInstructions, signupDOB;
     Spinner signupTitle;
     EditText signupFirstName, signupLastName, signupUsername, signupPassword, signupEmail, signupPhone, signupImage, signupAddress, signupPostal, signupSQ, signupSA;
     Button signupBtn;
@@ -294,8 +294,7 @@ public class SignupPage extends AppCompatActivity {
                 String email = charSequence.toString();
                 signupInstructions.setText("");
 
-                if(handler.fetchUsersUsingEmail(email)!=null)
-                {
+                if (handler.fetchUsersUsingEmail(email) != null) {
                     signupInstructions.setText("An account already exists with this email account");
                     validEmail = false;
                     return;
@@ -327,8 +326,7 @@ public class SignupPage extends AppCompatActivity {
                 String s = charSequence.toString();
                 signupInstructions.setText("");
 
-                if(handler.fetchUserUsingPhoneNumber(s)!=null)
-                {
+                if (handler.fetchUserUsingPhoneNumber(s) != null) {
                     signupInstructions.setText("An account already exists with this phone number");
                     validPhone = false;
                     return;
@@ -445,14 +443,12 @@ public class SignupPage extends AppCompatActivity {
 
                     UserDetails user = new UserDetails(signupTitle.getSelectedItem().toString(), signupFirstName.getText().toString(), signupLastName.getText().toString(), signupUsername.getText().toString(), signupPassword.getText().toString(), signupDOB.getText().toString(), gender, signupEmail.getText().toString(), signupPhone.getText().toString(), signupImage.getText().toString(), signupAddress.getText().toString(), signupPostal.getText().toString(), signupSQ.getText().toString(), signupSA.getText().toString());
 
-                    if(handler.addUser(user, SignupPage.this))
-                    {
+                    if (handler.addUser(user, SignupPage.this)) {
                         Toast.makeText(SignupPage.this, "user Added", Toast.LENGTH_SHORT).show();
 
-                        Intent intent=new Intent(SignupPage.this,LoginPage.class);
+                        Intent intent = new Intent(SignupPage.this, LoginPage.class);
                         startActivity(intent);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(SignupPage.this, "Some Error Occured!", Toast.LENGTH_SHORT).show();
                     }
 
