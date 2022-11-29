@@ -277,6 +277,23 @@ public class EditProfileFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String s = charSequence.toString();
+                Log.d("editPhone",s+ " " + user.getUsername());
+
+                if(handler.fetchUserUsingPhoneNumber(s) == user)
+                {
+                    validPhone=true;
+                    editProfileInstructions.setText("");
+                    return;
+                }
+
+                if (handler.fetchUserUsingPhoneNumber(s) != null) {
+                    editProfileInstructions.setText("An account already exists with this phone number");
+                    validPhone = false;
+                    Log.d("editPhone",s+ " "+ handler.fetchUserUsingPhoneNumber(s).getUsername() + " " + user.getUsername());
+
+                    return;
+                }
+
                 editProfileInstructions.setText("");
                 if (s.length() != 10) {
                     editProfileInstructions.setText("Phone number should contain only 10 characters");

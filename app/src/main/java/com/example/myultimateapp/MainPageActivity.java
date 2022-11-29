@@ -228,7 +228,7 @@ public class MainPageActivity extends AppCompatActivity {
             ed.putString("LoggedInUser", "");
             ed.apply();
 
-            LoginPage.mGoogleSignInClient.signOut();
+//            LoginPage.mGoogleSignInClient.signOut();
 
             Intent intent = new Intent(MainPageActivity.this, LoginPage.class);
             startActivity(intent);

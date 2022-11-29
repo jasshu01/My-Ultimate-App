@@ -326,6 +326,14 @@ public class SignupPage extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String s = charSequence.toString();
                 signupInstructions.setText("");
+
+                if(handler.fetchUserUsingPhoneNumber(s)!=null)
+                {
+                    signupInstructions.setText("An account already exists with this phone number");
+                    validPhone = false;
+                    return;
+                }
+
                 if (s.length() != 10) {
                     signupInstructions.setText("Phone number should contain only 10 characters");
                     validPhone = false;
