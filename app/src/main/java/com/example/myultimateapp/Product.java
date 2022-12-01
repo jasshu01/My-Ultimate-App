@@ -89,6 +89,7 @@ public class Product {
         return description;
     }
 
+
     @Override
     public String toString() {
         return "Product{" +
@@ -101,6 +102,8 @@ public class Product {
                 ", thumbnail=" + thumbnail +
                 ", rating=" + rating +
                 ", images=" + images +
+                ", imagesURL=" + imagesURL +
+                ", discount=" + discount +
                 '}';
     }
 

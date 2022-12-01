@@ -108,13 +108,6 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
 //        int pos=viewHolder.getBindingAdapterPosition();
         int pos = position;
 
-        viewHolder.categoryName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, localDataSet.get(viewHolder.getAbsoluteAdapterPosition()).first, Toast.LENGTH_SHORT).show();
-
-            }
-        });
         String category = localDataSet.get(pos).first;
         viewHolder.categoryName.setText(category.substring(0, 1).toUpperCase() + category.substring(1));
         CategoryAdapter childItemAdapter;// = new CategoryAdapter(dataToSend, localDataSet.get(pos).first);
@@ -129,6 +122,19 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
         }
         viewHolder.categoryRecyclerView.setAdapter(childItemAdapter);
         childItemAdapter.notifyDataSetChanged();
+
+
+
+
+        viewHolder.categoryName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, localDataSet.get(viewHolder.getAbsoluteAdapterPosition()).first, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
 
     }
 

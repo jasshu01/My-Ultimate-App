@@ -4,19 +4,31 @@ import static java.lang.Math.round;
 import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,19 +46,26 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     int color, textColor;
     String layout = "HORIZONTAL";
 
+    Context context;
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ViewHolder(View view) {
             super(view);
+
 
         }
 
 
         @Override
         public void onClick(View view) {
-
         }
 
+
+    }
+
+    public CategoryAdapter() {
 
     }
 
@@ -61,6 +80,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         this.layout = layout;
         this.category = category;
         localDataSet = dataSet;
+
 
         for (int i = 0; i < localDataSet.get(category).size(); i++)
             Log.d("displayingActivity6", "new : " + localDataSet.get(category).get(i).getTitle());
@@ -96,12 +116,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         productCard = view.findViewById(R.id.productCard);
 
 
+        context = view.getContext();
         return new ViewHolder(view);
     }
 
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
 
 
         Log.d("displayingActivity2", "categoryadapter: " + position);
@@ -130,12 +151,103 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Toast.makeText(thumbnail.getContext(), localDataSet.get(category).get(pos).getTitle(), Toast.LENGTH_SHORT).show();
 
+
+                Product currentProduct = localDataSet.get(category).get(position);
+                Log.d("currProduct", currentProduct.toString());
+
+                new MyTask2().execute(currentProduct);
             }
         });
 
 
+    }
+
+
+    public void createDialogBox(Product currentProduct) {
+
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_product_details);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+        TextView productDetailsBrand = dialog.findViewById(R.id.productDetailsBrand);
+        TextView productDetailsTitle = dialog.findViewById(R.id.productDetailsTitle);
+        TextView productDetailsDesc = dialog.findViewById(R.id.productDetailsDesc);
+        TextView productDetailsPrice = dialog.findViewById(R.id.productDetailsPrice);
+        TextView productDetailsRating = dialog.findViewById(R.id.productDetailsRating);
+        ImageView productDetailsThumbnail = dialog.findViewById(R.id.productDetailsThumbnail);
+        LinearLayout productDetailsImages = dialog.findViewById(R.id.productDetailsImages);
+
+        for (Bitmap image :
+                currentProduct.getImages()) {
+            ImageView imageview = new ImageView(context);
+            imageview.setImageBitmap(image);
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    800,800
+            );
+            params.setMargins(20, 0, 20, 0);
+            imageview.setLayoutParams(params);
+
+            productDetailsImages.addView(imageview);
+        }
+
+        productDetailsBrand.setText(currentProduct.getBrand());
+        productDetailsTitle.setText(currentProduct.getCategory() + " - " + currentProduct.getTitle());
+        productDetailsDesc.setText(currentProduct.getDescription());
+
+
+        double discountVal = currentProduct.getDiscount();
+        double priceVal = currentProduct.getPrice();
+
+        double finalPriceVal = Double.parseDouble(new DecimalFormat("0.00").format((100.00 - discountVal) * priceVal / 100));
+        String priceText = "<strong><i><s>$" + String.valueOf(priceVal) + "</s></i></strong>" + " <strong><i>" + "$" + String.valueOf(finalPriceVal) + "</i></strong>";
+
+
+        productDetailsPrice.setText(Html.fromHtml(priceText));
+        productDetailsRating.setText(String.valueOf(currentProduct.getRating()));
+
+
+        productDetailsThumbnail.setImageBitmap(currentProduct.getThumbnail());
+
+        dialog.show();
+
+    }
+
+    private class MyTask2 extends AsyncTask<Product, String, Product> {
+
+
+        @Override
+        protected Product doInBackground(Product... products) {
+            Product product = products[0];
+            ArrayList<Bitmap> images = new ArrayList<>();
+
+            for (int i = 0; i < product.getImagesURL().size(); i++) {
+                String url = product.getImagesURL().get(i);
+                InputStream inputStream = null;
+                try {
+                    inputStream = new URL(url).openConnection().getInputStream();
+                    images.add(BitmapFactory.decodeStream(inputStream));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            product.setImages(images);
+            return product;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void onPostExecute(Product product) {
+            super.onPostExecute(product);
+
+            createDialogBox(product);
+        }
     }
 
 

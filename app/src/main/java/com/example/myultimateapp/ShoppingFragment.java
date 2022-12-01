@@ -195,7 +195,7 @@ public class ShoppingFragment extends Fragment {
         return;
     }
 
-    private class MyTask extends AsyncTask<Pair<Product, String>, String, Pair<Product, Bitmap>> {
+     private class MyTask extends AsyncTask<Pair<Product, String>, String, Pair<Product, Bitmap>> {
 
 
         @Override
