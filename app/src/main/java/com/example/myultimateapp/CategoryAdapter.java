@@ -4,11 +4,9 @@ import static java.lang.Math.round;
 import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,6 @@ import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,6 +32,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     ImageView thumbnail;
     CardView productCard;
     int color, textColor;
+    String layout = "HORIZONTAL";
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -53,14 +50,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     }
 
-    public CategoryAdapter(TreeMap<String, ArrayList<Product>> dataSet, String category) {
+    public CategoryAdapter(TreeMap<String, ArrayList<Product>> dataSet, String category, String layout) {
 
 
         Random rnd = new Random();
         color = Color.argb(10, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 //        textColor =  Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        textColor=Color.BLACK;
+        textColor = Color.BLACK;
 
+        this.layout = layout;
         this.category = category;
         localDataSet = dataSet;
 
@@ -77,9 +75,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.fragment_shopping_product_view, viewGroup, false);
 
+
+        View view;// = LayoutInflater.from(viewGroup.getContext())
+        // .inflate(R.layout.fragment_shopping_product_view, viewGroup, false);
+
+        if (layout == "HORIZONTAL") {
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.fragment_shopping_product_view, viewGroup, false);
+
+        } else {
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.fragment_shopping_product_view_vertical, viewGroup, false);
+
+        }
         details = view.findViewById(R.id.productDesc);
         price = view.findViewById(R.id.productPrice);
         rating = view.findViewById(R.id.productRating);
@@ -90,18 +99,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//
-//    @Override
-//    public int getItemViewType(int position) {
-//        return position;
-//    }
-
-    // Replace the contents of a view (invoked by the layout manager)
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
@@ -116,16 +113,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         int pos = position;
 
 
+        String productdetails = "<strong>" + localDataSet.get(category).get(pos).getBrand() + "-" + localDataSet.get(category).get(pos).getTitle() + "</strong>" + "\n" + localDataSet.get(category).get(pos).getDescription();
 
 
-        String productdetails = "<strong>"+ localDataSet.get(category).get(pos).getBrand() + "-" + localDataSet.get(category).get(pos).getTitle() +"</strong>" + "\n" + localDataSet.get(category).get(pos).getDescription();
-
-
-        double discountVal=localDataSet.get(category).get(pos).getDiscount();
-        double priceVal=localDataSet.get(category).get(pos).getPrice();
+        double discountVal = localDataSet.get(category).get(pos).getDiscount();
+        double priceVal = localDataSet.get(category).get(pos).getPrice();
 //        double finalPriceVal=Math.round((1-discountVal/100)*priceVal);
-        double finalPriceVal= Double.parseDouble(new DecimalFormat("0.00").format((100.00-discountVal)*priceVal/100));
-        String priceText= "<strong><i><s>$" + String.valueOf(priceVal)+"</s></i></strong>"+ " <strong><i>"+"$" + String.valueOf(finalPriceVal)+"</i></strong>";
+        double finalPriceVal = Double.parseDouble(new DecimalFormat("0.00").format((100.00 - discountVal) * priceVal / 100));
+        String priceText = "<strong><i><s>$" + String.valueOf(priceVal) + "</s></i></strong>" + " <strong><i>" + "$" + String.valueOf(finalPriceVal) + "</i></strong>";
 
         details.setText(Html.fromHtml(productdetails));
         price.setText(Html.fromHtml(priceText));
@@ -139,13 +134,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             }
         });
-
-//        String productdetails = localDataSet.get(position).getBrand() + "-" + localDataSet.get(position).getTitle() + "\n" + localDataSet.get(position).getDescription();
-//        productdetails = productdetails.substring(0, 50);
-//        details.setText(productdetails);
-//        price.setText("$" + String.valueOf(localDataSet.get(position).getPrice()));
-//        rating.setText(String.valueOf(localDataSet.get(position).getRating()));
-//        thumbnail.setImageBitmap(localDataSet.get(position).getThumbnail());
 
 
     }

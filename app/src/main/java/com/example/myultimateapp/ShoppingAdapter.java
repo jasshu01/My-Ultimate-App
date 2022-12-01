@@ -96,8 +96,8 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager_vertical = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager_horizontal = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
 
 
         Log.d("displayingActivity6", "\n\n\ncategory " + localDataSet.get(position).first);
@@ -115,15 +115,20 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
 
             }
         });
-        String category=localDataSet.get(pos).first;
+        String category = localDataSet.get(pos).first;
         viewHolder.categoryName.setText(category.substring(0, 1).toUpperCase() + category.substring(1));
-        CategoryAdapter childItemAdapter = new CategoryAdapter(dataToSend, localDataSet.get(pos).first);
-//        viewHolder.categoryName.setText(localDataSet.get(position).first);
-//        CategoryAdapter childItemAdapter = new CategoryAdapter(localDataSet.get(position).second);
-        viewHolder.categoryRecyclerView.setLayoutManager(layoutManager);
+        CategoryAdapter childItemAdapter;// = new CategoryAdapter(dataToSend, localDataSet.get(pos).first);
+
+        if (pos % 2 == 0) {
+            childItemAdapter = new CategoryAdapter(dataToSend, localDataSet.get(pos).first,"VERTICAL");
+            viewHolder.categoryRecyclerView.setLayoutManager(layoutManager_vertical);
+
+        } else {
+            childItemAdapter = new CategoryAdapter(dataToSend, localDataSet.get(pos).first,"HORIZONTAL");
+            viewHolder.categoryRecyclerView.setLayoutManager(layoutManager_horizontal);
+        }
         viewHolder.categoryRecyclerView.setAdapter(childItemAdapter);
         childItemAdapter.notifyDataSetChanged();
-//        viewHolder.categoryRecyclerView.setItemViewCacheSize(0);
 
     }
 
