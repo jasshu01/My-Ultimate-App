@@ -2,14 +2,25 @@ package com.example.myultimateapp;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,10 +30,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,8 +51,10 @@ public class EditProfileFragment extends Fragment {
 
     TextView editProfileInstructions, editProfileDOB;
     Spinner editProfileTitle;
-    EditText editProfileFirstName, editProfileLastName, editProfileUsername, editProfilePasswor, editProfileEmail, editProfilePhone, editProfileImage, editProfileAddress, editProfilePostal, editProfileSQ, editProfileSA;
+    EditText editProfileFirstName, editProfileLastName, editProfileUsername, editProfileEmail, editProfilePhone, editProfileAddress, editProfilePostal, editProfileSQ, editProfileSA;
     Button editProfileBtn;
+
+    Bitmap myEditedImage = null;
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     Boolean validUsername = true;
@@ -45,6 +65,11 @@ public class EditProfileFragment extends Fragment {
 
     Boolean validSQ = true;
     Boolean validSA = true;
+
+    ImageView editProfileDisplayPic;
+    FloatingActionButton editProfileEditPicBtn;
+
+    ActivityResultLauncher<Intent> activityResultLauncher_capture, activityResultLauncher_choose;
 
 
     public EditProfileFragment() {
@@ -59,6 +84,7 @@ public class EditProfileFragment extends Fragment {
 
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,7 +93,31 @@ public class EditProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
 
+        activityResultLauncher_choose = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->
+        {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+
+                if (data != null && data.getData() != null) {
+                    Uri selectedImageUri = data.getData();
+                    Bitmap selectedImageBitmap;
+                    try {
+                        selectedImageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImageUri);
+                        myEditedImage = selectedImageBitmap;
+                        editProfileDisplayPic.setImageBitmap(selectedImageBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+
         dbHandler handler = new dbHandler(getContext(), "myApp", null, 1);
+
+        editProfileDisplayPic = view.findViewById(R.id.editProfileDisplayPic);
+        editProfileEditPicBtn = view.findViewById(R.id.editProfileEditPicButton);
 
         editProfileInstructions = view.findViewById(R.id.instructions);
         editProfileTitle = view.findViewById(R.id.editProfileTitle);
@@ -77,12 +127,13 @@ public class EditProfileFragment extends Fragment {
         editProfileDOB = view.findViewById(R.id.editProfileDOB);
         editProfileEmail = view.findViewById(R.id.editProfileEmail);
         editProfilePhone = view.findViewById(R.id.editProfilePhone);
-        editProfileImage = view.findViewById(R.id.editProfileImage);
+
         editProfileAddress = view.findViewById(R.id.editProfileAddress);
         editProfilePostal = view.findViewById(R.id.editProfilePostal);
         editProfileSQ = view.findViewById(R.id.editProfileSQ);
         editProfileSA = view.findViewById(R.id.editProfileSA);
         editProfileBtn = view.findViewById(R.id.editProfileButton);
+
 
         SharedPreferences sp = getActivity().getSharedPreferences("Current User", MODE_PRIVATE);
         String username = sp.getString("LoggedInUser", "");
@@ -91,6 +142,14 @@ public class EditProfileFragment extends Fragment {
 
 
         UserDetails user = handler.fetchUserUsingUserName(username);
+
+        myEditedImage = handler.StringToBitMap(user.getImageurls());
+        if (myEditedImage != null)
+            editProfileDisplayPic.setImageBitmap(myEditedImage);
+        else
+            editProfileDisplayPic.setImageResource(R.drawable.person);
+
+
         Log.d("editprofile", "onCreateView: " + user);
 
         List<String> titles = new ArrayList<String>();
@@ -110,11 +169,12 @@ public class EditProfileFragment extends Fragment {
         editProfileDOB.setText(user.getDob());
         editProfileEmail.setText(user.getEmail());
         editProfilePhone.setText(user.getPhone());
-        editProfileImage.setText(user.getImageurls());
+
         editProfileAddress.setText(user.getAddress());
         editProfilePostal.setText(user.getPostalcode());
         editProfileSQ.setText(user.getSecurityquestion());
         editProfileSA.setText(user.getSecurityanswer());
+
 
         editProfileDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +195,6 @@ public class EditProfileFragment extends Fragment {
                 StartTime.show();
             }
         });
-
         editProfileFirstName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -231,8 +290,6 @@ public class EditProfileFragment extends Fragment {
 
             }
         });
-
-
         editProfileEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -366,6 +423,17 @@ public class EditProfileFragment extends Fragment {
         });
 
 
+        editProfileEditPicBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(getContext(), "Editing Image", Toast.LENGTH_SHORT).show();
+                createOptionDialogBox();
+
+
+            }
+        });
+
+
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -400,11 +468,15 @@ public class EditProfileFragment extends Fragment {
                 if (validUsername && validFirstName && validPhone && validEmail && validSQ && validSA) {
 
 
+                    String editProfileImageString = handler.BitMapToString(myEditedImage);
+
+
                     String gender = "Female";
                     if (editProfileTitle.getSelectedItem().equals("Mr."))
                         gender = "Male";
 
-                    UserDetails userUpdated = new UserDetails(user.getSno(), editProfileTitle.getSelectedItem().toString(), editProfileFirstName.getText().toString(), editProfileLastName.getText().toString(), editProfileUsername.getText().toString(), user.getPassword(), editProfileDOB.getText().toString(), gender, editProfileEmail.getText().toString(), editProfilePhone.getText().toString(), editProfileImage.getText().toString(), editProfileAddress.getText().toString(), editProfilePostal.getText().toString(), editProfileSQ.getText().toString(), editProfileSA.getText().toString());
+                    UserDetails userUpdated = new UserDetails(user.getSno(), editProfileTitle.getSelectedItem().toString(), editProfileFirstName.getText().toString(), editProfileLastName.getText().toString(), editProfileUsername.getText().toString(), user.getPassword(), editProfileDOB.getText().toString(), gender, editProfileEmail.getText().toString(), editProfilePhone.getText().toString(), editProfileImageString, editProfileAddress.getText().toString(), editProfilePostal.getText().toString(), editProfileSQ.getText().toString(), editProfileSA.getText().toString());
+//                    UserDetails userUpdated = new UserDetails(user.getSno(), editProfileTitle.getSelectedItem().toString(), editProfileFirstName.getText().toString(), editProfileLastName.getText().toString(), editProfileUsername.getText().toString(), user.getPassword(), editProfileDOB.getText().toString(), gender, editProfileEmail.getText().toString(), editProfilePhone.getText().toString(), editProfileImage.getText().toString(), editProfileAddress.getText().toString(), editProfilePostal.getText().toString(), editProfileSQ.getText().toString(), editProfileSA.getText().toString());
 
                     if (handler.updateUser(userUpdated, getContext())) {
                         Toast.makeText(getContext(), "user updated", Toast.LENGTH_SHORT).show();
@@ -425,6 +497,51 @@ public class EditProfileFragment extends Fragment {
         });
         return view;
 
+
+    }
+
+
+    public void createOptionDialogBox() {
+
+
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_image_picker_options);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        ImageView dialogImagePickerClickImage, dialogImagePickerPickImage;
+        dialogImagePickerClickImage = dialog.findViewById(R.id.dialogImagePickerClickImage);
+        dialogImagePickerPickImage = dialog.findViewById(R.id.dialogImagePickerPickImage);
+
+
+        dialogImagePickerPickImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), "Picking From Gallery", Toast.LENGTH_SHORT).show();
+
+                Intent choosePictureIntent = new Intent();
+                choosePictureIntent.setType("image/*");
+                choosePictureIntent.setAction(Intent.ACTION_GET_CONTENT);
+                try {
+                    activityResultLauncher_choose.launch(choosePictureIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        dialogImagePickerClickImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), "Clicking Image", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+        dialog.show();
 
     }
 
