@@ -27,7 +27,8 @@
                 <ImageView
                     android:id="@+id/yourProfile_ProfilePic"
                     android:layout_width="match_parent"
-                    android:layout_height="172dp"
+                    android:layout_height="200dp"
+                    android:layout_margin="20dp"
                     android:src="@drawable/person" />
 
             </androidx.cardview.widget.CardView>
