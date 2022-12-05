@@ -41,6 +41,36 @@
             android:paddingRight="20dp"
             android:paddingBottom="10dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/signupDisplayPic"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/person"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/signupEditPicButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:src="@drawable/edit_clipart"
+                    app:backgroundTint="#E18A8A"
+                    app:layout_constraintBottom_toBottomOf="@+id/signupDisplayPic"
+                    app:layout_constraintEnd_toEndOf="@+id/signupDisplayPic"
+                    app:layout_constraintStart_toEndOf="@+id/signupDisplayPic"
+                    app:layout_constraintTop_toBottomOf="@+id/signupDisplayPic" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <Spinner
                 android:id="@+id/signupTitle"
                 android:layout_width="match_parent"
@@ -112,14 +142,7 @@
                 android:inputType="phone"
                 android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/signupImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter ImageUrl"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+
 
             <EditText
                 android:id="@+id/signupAddress"

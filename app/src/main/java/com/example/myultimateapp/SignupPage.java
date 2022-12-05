@@ -1,23 +1,38 @@
 package com.example.myultimateapp;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,7 +42,7 @@ public class SignupPage extends AppCompatActivity {
 
     TextView signupInstructions, signupDOB;
     Spinner signupTitle;
-    EditText signupFirstName, signupLastName, signupUsername, signupPassword, signupEmail, signupPhone, signupImage, signupAddress, signupPostal, signupSQ, signupSA;
+    EditText signupFirstName, signupLastName, signupUsername, signupPassword, signupEmail, signupPhone, signupAddress, signupPostal, signupSQ, signupSA;
     Button signupBtn;
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -39,8 +54,15 @@ public class SignupPage extends AppCompatActivity {
     Boolean validSQ = false;
     Boolean validSA = false;
 
+    ImageView signupDisplayPic;
+    FloatingActionButton signupEditPicBtn;
+    Bitmap mySignupimage = null;
+    ActivityResultLauncher<Intent> activityResultLauncher_capture, activityResultLauncher_choose;
+
+
     dbHandler handler = new dbHandler(SignupPage.this, "myApp", null, 1);
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +77,67 @@ public class SignupPage extends AppCompatActivity {
         signupDOB = findViewById(R.id.signupDOB);
         signupEmail = findViewById(R.id.signupEmail);
         signupPhone = findViewById(R.id.signupPhone);
-        signupImage = findViewById(R.id.signupImage);
+
         signupAddress = findViewById(R.id.signupAddress);
         signupPostal = findViewById(R.id.signupPostal);
         signupSQ = findViewById(R.id.signupSQ);
         signupSA = findViewById(R.id.signupSA);
         signupBtn = findViewById(R.id.signupButton);
+
+        signupDisplayPic = findViewById(R.id.signupDisplayPic);
+        signupEditPicBtn = findViewById(R.id.signupEditPicButton);
+
+        signupDisplayPic.setImageResource(R.drawable.person);
+
+        signupEditPicBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(getContext(), "Editing Image", Toast.LENGTH_SHORT).show();
+                createOptionDialogBox();
+
+
+            }
+        });
+
+        activityResultLauncher_choose = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->
+        {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+
+                if (data != null && data.getData() != null) {
+                    Uri selectedImageUri = data.getData();
+                    Bitmap selectedImageBitmap;
+                    try {
+                        selectedImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri)
+                        ;
+                        mySignupimage = selectedImageBitmap;
+                        signupDisplayPic.setImageBitmap(selectedImageBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+        activityResultLauncher_capture = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap photo = (Bitmap) bundle.get("data");
+
+                    mySignupimage = photo;
+                    signupDisplayPic.setImageBitmap(photo);
+                } else {
+                    Log.d("capturingImage", result.toString());
+                    Log.d("capturingImage", String.valueOf(result.getResultCode()));
+                    Toast.makeText(SignupPage.this, "Some Error occured", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
 
         List<String> titles = new ArrayList<String>();
@@ -281,8 +358,6 @@ public class SignupPage extends AppCompatActivity {
 
             }
         });
-
-
         signupEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -396,7 +471,6 @@ public class SignupPage extends AppCompatActivity {
             }
         });
 
-
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -434,14 +508,13 @@ public class SignupPage extends AppCompatActivity {
                 if (validUsername && validPassword && validFirstName && validPhone && validEmail && validSQ && validSA) {
 
 
-//                    Log.d("selectedTitle", "onClick: i am here");
-//                    Log.d("selectedTitle", "onClick: "+signupTitle.getSelectedItem());
+                    String myImageString = handler.BitMapToString(mySignupimage);
 
                     String gender = "Female";
                     if (signupTitle.getSelectedItem().equals("Mr."))
                         gender = "Male";
 
-                    UserDetails user = new UserDetails(signupTitle.getSelectedItem().toString(), signupFirstName.getText().toString(), signupLastName.getText().toString(), signupUsername.getText().toString(), signupPassword.getText().toString(), signupDOB.getText().toString(), gender, signupEmail.getText().toString(), signupPhone.getText().toString(), signupImage.getText().toString(), signupAddress.getText().toString(), signupPostal.getText().toString(), signupSQ.getText().toString(), signupSA.getText().toString());
+                    UserDetails user = new UserDetails(signupTitle.getSelectedItem().toString(), signupFirstName.getText().toString(), signupLastName.getText().toString(), signupUsername.getText().toString(), signupPassword.getText().toString(), signupDOB.getText().toString(), gender, signupEmail.getText().toString(), signupPhone.getText().toString(), myImageString, signupAddress.getText().toString(), signupPostal.getText().toString(), signupSQ.getText().toString(), signupSA.getText().toString());
 
                     if (handler.addUser(user, SignupPage.this)) {
                         Toast.makeText(SignupPage.this, "user Added", Toast.LENGTH_SHORT).show();
@@ -458,6 +531,57 @@ public class SignupPage extends AppCompatActivity {
             }
         });
 
+
+    }
+
+
+    public void createOptionDialogBox() {
+
+
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_image_picker_options);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        ImageView dialogImagePickerClickImage, dialogImagePickerPickImage;
+        dialogImagePickerClickImage = dialog.findViewById(R.id.dialogImagePickerClickImage);
+        dialogImagePickerPickImage = dialog.findViewById(R.id.dialogImagePickerPickImage);
+
+
+        dialogImagePickerPickImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Toast.makeText(SignupPage.this, "Picking From Gallery", Toast.LENGTH_SHORT).show();
+
+                Intent choosePictureIntent = new Intent();
+                choosePictureIntent.setType("image/*");
+                choosePictureIntent.setAction(Intent.ACTION_GET_CONTENT);
+                try {
+                    activityResultLauncher_choose.launch(choosePictureIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        dialogImagePickerClickImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Toast.makeText(SignupPage.this, "Clicking Image", Toast.LENGTH_SHORT).show();
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    activityResultLauncher_capture.launch(takePictureIntent);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        dialog.show();
 
     }
 }
