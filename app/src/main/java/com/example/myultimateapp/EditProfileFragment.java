@@ -2,6 +2,8 @@ package com.example.myultimateapp;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static androidx.media.MediaBrowserServiceCompat.RESULT_OK;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -14,6 +16,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
@@ -110,6 +114,25 @@ public class EditProfileFragment extends Fragment {
                     }
 
                 }
+            }
+        });
+
+        activityResultLauncher_capture = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap photo = (Bitmap) bundle.get("data");
+
+                    myEditedImage = photo;
+                    editProfileDisplayPic.setImageBitmap(photo);
+                } else {
+                    Log.d("capturingImage", result.toString());
+                    Log.d("capturingImage", String.valueOf(result.getResultCode()));
+                    Toast.makeText(getContext(), "Some Error occured", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -531,13 +554,19 @@ public class EditProfileFragment extends Fragment {
 
             }
         });
+
         dialogImagePickerClickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
                 Toast.makeText(getContext(), "Clicking Image", Toast.LENGTH_SHORT).show();
 
-
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    activityResultLauncher_capture.launch(takePictureIntent);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
