@@ -6,8 +6,11 @@ import android.provider.UserDictionary;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +34,15 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView categoryName;
         RecyclerView categoryRecyclerView;
+        LinearLayout categoryLinearLayout;
 
         public ViewHolder(View view) {
             super(view);
 
 
+
             categoryName = view.findViewById(R.id.shoppingProductCategory);
+            categoryLinearLayout = view.findViewById(R.id.categoryLinearLayout);
             categoryRecyclerView = view.findViewById(R.id.categoryRecyclerView);
         }
 
@@ -97,6 +103,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
         LinearLayoutManager layoutManager_vertical = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+
         LinearLayoutManager layoutManager_horizontal = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
 
 
@@ -116,9 +123,30 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
             childItemAdapter = new CategoryAdapter(dataToSend, localDataSet.get(pos).first,"VERTICAL");
             viewHolder.categoryRecyclerView.setLayoutManager(layoutManager_vertical);
 
+
+
+            viewHolder.categoryRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+
+
+
+            LinearLayout.LayoutParams lp =
+                    new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1200);
+            viewHolder.categoryRecyclerView.setLayoutParams(lp);
+
+
+
         } else {
             childItemAdapter = new CategoryAdapter(dataToSend, localDataSet.get(pos).first,"HORIZONTAL");
             viewHolder.categoryRecyclerView.setLayoutManager(layoutManager_horizontal);
+
+
         }
         viewHolder.categoryRecyclerView.setAdapter(childItemAdapter);
         childItemAdapter.notifyDataSetChanged();
