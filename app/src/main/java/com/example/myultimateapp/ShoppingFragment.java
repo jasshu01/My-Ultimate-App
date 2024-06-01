@@ -154,12 +154,12 @@ public class ShoppingFragment extends Fragment {
 //                    }
 
                     Product product = new Product();
-                    product.setBrand(response.getString("brand"));
+//                    product.setBrand(response.getString("brand"));
                     product.setTitle(response.getString("title"));
                     product.setCategory(response.getString("category"));
                     product.setId(Integer.parseInt(response.getString("id")));
                     product.setDescription(response.getString("description"));
-                    product.setPrice(Integer.parseInt(response.getString("price")));
+                    product.setPrice(Double.parseDouble(response.getString("price")));
                     product.setRating(Double.parseDouble(response.getString("rating")));
                     product.setDiscount(Double.parseDouble(response.getString("discountPercentage")));
                     product.setThumbnail(thumbnail);

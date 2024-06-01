@@ -25,7 +25,8 @@ public class Product {
 //            ]
 
 
-    int id, price;
+    int id;
+    double price;
     String title, description, brand, category;
     Bitmap thumbnail;
     double rating;
@@ -69,11 +70,11 @@ public class Product {
         this.id = id;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -112,7 +113,7 @@ public class Product {
     }
 
     public String getBrand() {
-        return brand;
+        return "Brand Name";
     }
 
     public void setBrand(String brand) {
