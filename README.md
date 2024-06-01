@@ -1,7 +1,7 @@
 # My-Ultimate-App
 
 #following features have been implemented in this application
-* Navigaion drawer
+* Navigation drawer
 * Tool Bar
 * Fragments
 * Fetching data from API
